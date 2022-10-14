@@ -29,20 +29,21 @@ fun MovieSearchBar(
     onResetSearchButton: () -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(top = 10.dp, start = 20.dp, end = 20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        modifier = modifier
+            .padding(horizontal = 10.dp, vertical = 10.dp)
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(
-            modifier = modifier
-                .wrapContentWidth()
-                .padding(end = 5.dp),
+            modifier = modifier.padding(bottom = 8.dp),
             value = searchValue,
             onValueChange = onChangeSearchValue,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = colorResource(id = R.color.orange),
                 unfocusedBorderColor = colorResource(id = R.color.white),
-                focusedLabelColor =  colorResource(id = R.color.orange),
+                focusedLabelColor = colorResource(id = R.color.orange),
                 errorBorderColor = colorResource(id = R.color.red),
                 errorLabelColor = colorResource(id = R.color.red)
             ),
@@ -51,7 +52,11 @@ fun MovieSearchBar(
             trailingIcon = {
                 if (searchValue.isNotEmpty()) {
                     IconButton(onClick = { onResetSearchButton() }) {
-                        Icon(imageVector = Icons.Default.Close, contentDescription = "close", tint = colorResource(R.color.orange),)
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "close",
+                            tint = colorResource(R.color.orange),
+                        )
                     }
                 }
             },
@@ -65,6 +70,7 @@ fun MovieSearchBar(
             })
         )
         OutlinedButton(
+            modifier = modifier.padding(start = 10.dp),
             onClick = { onSearchButtonClick() },
             border = BorderStroke(
                 1.dp,
@@ -76,7 +82,9 @@ fun MovieSearchBar(
                 text = "검색",
                 textAlign = TextAlign.Center,
                 style = TextStyle(
-                    if (searchValue.length < 2) colorResource(id = R.color.red) else colorResource(id = R.color.orange)
+                    if (searchValue.length < 2) colorResource(id = R.color.red) else colorResource(
+                        id = R.color.orange
+                    )
                 )
             )
         }
