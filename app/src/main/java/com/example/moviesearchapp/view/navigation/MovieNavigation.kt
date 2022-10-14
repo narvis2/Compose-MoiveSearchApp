@@ -12,7 +12,6 @@ import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.screen.home.HomeScreen
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.google.accompanist.navigation.material.bottomSheet
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import kotlinx.coroutines.CoroutineScope
 
@@ -41,10 +40,6 @@ fun MovieNavigation(mainViewModel: MainViewModel, coroutineScope: CoroutineScope
                     setSearchQuery = mainViewModel::setSearchQuery,
                     onClearQuery = mainViewModel::onClearQuery
                 )
-            }
-
-            bottomSheet(route= "") {
-                // TODO: Composable 넣기
             }
         }
     }
