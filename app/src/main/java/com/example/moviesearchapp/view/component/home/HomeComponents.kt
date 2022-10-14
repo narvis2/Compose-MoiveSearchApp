@@ -30,7 +30,7 @@ fun MovieSearchBar(
 ) {
     Row(
         modifier = modifier
-            .padding(horizontal = 10.dp, vertical = 10.dp)
+            .padding(vertical = 10.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         horizontalArrangement = Arrangement.SpaceBetween,
