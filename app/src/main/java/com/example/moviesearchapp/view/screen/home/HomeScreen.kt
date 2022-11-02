@@ -70,12 +70,6 @@ fun HomeScreen(
                 }
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(movieList) { movie ->
-                        movie?.let {
-                            Timber.e("🍎 MovieInfoModel -> $it")
-                        }
-                    }
-
                     when {
                         // 초기 load 또는 새로고침이 실패하면 -> ERROR
                         movieList.loadState.source.refresh is LoadState.Error && movieList.itemCount == 0 -> {
@@ -92,7 +86,11 @@ fun HomeScreen(
                                 homeViewModel.setIsRefreshing(false)
                             }
 
-                            // TODO:: SHOW EMPTY VIEW
+                            items(movieList) { movie ->
+                                movie?.let {
+                                    Timber.e("🍎 MovieInfoModel -> $it")
+                                }
+                            }
                         }
 
                         // Local Db 또는 Remote 에서 새로 고침이 성공한 경우 -> VIEW
