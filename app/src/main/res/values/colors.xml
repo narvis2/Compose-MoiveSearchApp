@@ -10,4 +10,5 @@
     <color name="red">#FFFF0000</color>
     <color name="orange">#FFAB00</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="transparency_black">#55000000</color>
 </resources>

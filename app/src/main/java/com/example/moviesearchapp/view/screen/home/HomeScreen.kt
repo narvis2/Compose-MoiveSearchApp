@@ -21,10 +21,8 @@ import com.example.moviesearchapp.view.component.home.MovieSearchBar
 fun HomeScreen(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
+    scaffoldState: ScaffoldState,
 ) {
-    // Snack Bar
-    val scaffoldState = rememberScaffoldState()
-
     val searchQuery = homeViewModel.searchQuery.collectAsState()
 
     Scaffold(
