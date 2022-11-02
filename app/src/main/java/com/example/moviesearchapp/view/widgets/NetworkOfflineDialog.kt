@@ -1,14 +1,18 @@
 package com.example.moviesearchapp.view.widgets
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,27 +41,34 @@ fun NetworkOfflineDialog(
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(start = 20.dp, end = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "네트워크가 끊어졌습니다.", style = TextStyle(
+                        text = stringResource(id = R.string.str_retry_disabled_network),
+                        style = TextStyle(
                             color = colorResource(
                                 id = R.color.white
-                            ), fontSize = 16.sp, textAlign = TextAlign.Center
+                            ),
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center
                         )
                     )
 
-                    Text(
-                        modifier = Modifier.padding(top = 5.dp),
-                        text = "네트워크 연결을 확인해 주세요.", style = TextStyle(
-                            color = colorResource(
-                                id = R.color.white
-                            ), fontSize = 16.sp, textAlign = TextAlign.Center
+                    Button(
+                        onClick = onRetry,
+                        modifier = Modifier.padding(top = 15.dp),
+                        shape = RoundedCornerShape(50.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = colorResource(id = R.color.button),
+                            contentColor = Color.White
                         )
-                    )
-
-                    Button(onClick = onRetry, modifier = Modifier.padding(top = 10.dp)) {
-                        Text(text = "재시도")
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(2.dp),
+                            text = "새로고침",
+                            style = TextStyle(color = Color.White, fontSize = 16.sp)
+                        )
                     }
                 }
             }
