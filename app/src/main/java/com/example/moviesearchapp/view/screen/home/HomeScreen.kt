@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,17 +65,11 @@ fun HomeScreen(
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing.value),
                 onRefresh = {
-                    movieList.refresh()
                     homeViewModel.setIsRefreshing(true)
+                    movieList.refresh()
                 }
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(movieList) { movie ->
-                        movie?.let {
-                            Timber.e("🍎 MovieInfoModel -> $it")
-                        }
-                    }
-
                     when {
                         // 초기 load 또는 새로고침이 실패하면 -> ERROR
                         movieList.loadState.source.refresh is LoadState.Error && movieList.itemCount == 0 -> {
@@ -93,7 +86,11 @@ fun HomeScreen(
                                 homeViewModel.setIsRefreshing(false)
                             }
 
-                            // TODO:: SHOW EMPTY VIEW
+                            items(movieList) { movie ->
+                                movie?.let {
+                                    Timber.e("🍎 MovieInfoModel -> $it")
+                                }
+                            }
                         }
 
                         // Local Db 또는 Remote 에서 새로 고침이 성공한 경우 -> VIEW
@@ -106,7 +103,15 @@ fun HomeScreen(
 
                         // Loading
                         else -> {
-
+                            item {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
                         }
                     }
                 }
