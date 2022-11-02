@@ -17,12 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MovieNavigation(mainViewModel: MainViewModel, coroutineScope: CoroutineScope) {
-    // Snack Bar
-    val scaffoldState = rememberScaffoldState()
-
-    // Home
-    val searchQuery = mainViewModel.searchQuery.collectAsState()
+fun MovieNavigation(mainViewModel: MainViewModel) {
 
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
@@ -33,13 +28,7 @@ fun MovieNavigation(mainViewModel: MainViewModel, coroutineScope: CoroutineScope
     ) {
         NavHost(navController = navController, startDestination = NavigationType.HOME_SCREEN.name) {
             composable(route = NavigationType.HOME_SCREEN.name) {
-                HomeScreen(
-                    navController = navController,
-                    scaffoldState = scaffoldState,
-                    searchQuery = searchQuery.value,
-                    setSearchQuery = mainViewModel::setSearchQuery,
-                    onClearQuery = mainViewModel::onClearQuery
-                )
+                HomeScreen(navController = navController)
             }
         }
     }

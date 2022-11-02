@@ -1,29 +1,33 @@
 package com.example.moviesearchapp.view.screen.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.moviesearchapp.R
+import com.example.moviesearchapp.view.component.home.HomeViewModel
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     navController: NavController,
-    scaffoldState: ScaffoldState,
-    searchQuery: String,
-    setSearchQuery: (String) -> Unit,
-    onClearQuery: () -> Unit
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
+    // Snack Bar
+    val scaffoldState = rememberScaffoldState()
+
+    val searchQuery = homeViewModel.searchQuery.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -42,12 +46,12 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MovieSearchBar(
-                searchValue = searchQuery,
-                onChangeSearchValue = setSearchQuery,
+                searchValue = searchQuery.value,
+                onChangeSearchValue = homeViewModel::setSearchQuery,
                 onSubmitButton = { /* TODO */ },
                 onSearchButtonClick = {/* TODO */},
             ) {
-                onClearQuery()
+                homeViewModel.onClearQuery()
             }
 
             Divider(modifier = Modifier.fillMaxWidth())
