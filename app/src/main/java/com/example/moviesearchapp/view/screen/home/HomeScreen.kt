@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,8 +65,8 @@ fun HomeScreen(
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing.value),
                 onRefresh = {
-                    movieList.refresh()
                     homeViewModel.setIsRefreshing(true)
+                    movieList.refresh()
                 }
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -106,7 +105,15 @@ fun HomeScreen(
 
                         // Loading
                         else -> {
-
+                            item {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
                         }
                     }
                 }
