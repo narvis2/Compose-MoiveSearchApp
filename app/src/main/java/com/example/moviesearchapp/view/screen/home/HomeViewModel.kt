@@ -1,4 +1,4 @@
-package com.example.moviesearchapp.view.component.home
+package com.example.moviesearchapp.view.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

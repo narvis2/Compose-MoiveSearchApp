@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.moviesearchapp.R
-import com.example.moviesearchapp.view.component.home.HomeViewModel
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
