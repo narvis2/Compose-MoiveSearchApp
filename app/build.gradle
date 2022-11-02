@@ -8,18 +8,18 @@ plugins {
 
 android {
     namespace 'com.example.moviesearchapp'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.moviesearchapp"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
-        buildConfigField ("String", "NAVE_CLIENT_ID", "\"rP8PEBH4MIBMeT46ZnxY\"")
-        buildConfigField ("String", "NAVE_CLIENT_SECRET", "\"lPjMbS7dJ3\"")
-        buildConfigField ("String", "API_HOST", "\"https://openapi.naver.com/v1/\"")
+        buildConfigField ("String", "NAVE_CLIENT_ID", "\"fqY6A3gq_6L8pmLCZZsC\"")
+        buildConfigField ("String", "NAVE_CLIENT_SECRET", "\"RI2nRoBaPc\"")
+        buildConfigField ("String", "API_HOST", "\"https://openapi.naver.com/\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -106,9 +106,12 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.5.2"
     // Compose Navigation + BottomSheet
     implementation "com.google.accompanist:accompanist-navigation-material:0.25.1"
+    // Compose SwipeRefreshLayout
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
 
     // Paging3 Pagination
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
     testImplementation "androidx.paging:paging-common:$paging_version"
 
     testImplementation 'junit:junit:4.13.2'
