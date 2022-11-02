@@ -1,5 +1,6 @@
 package com.example.moviesearchapp.view.widgets
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -12,6 +13,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +46,10 @@ fun NetworkOfflineDialog(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
+                    Image(painter = painterResource(id = R.drawable.search_none_w), contentDescription = "")
+
                     Text(
+                        modifier = Modifier.padding(top = 17.dp),
                         text = stringResource(id = R.string.str_retry_disabled_network),
                         style = TextStyle(
                             color = colorResource(
