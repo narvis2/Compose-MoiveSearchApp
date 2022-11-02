@@ -17,6 +17,9 @@ class HomeViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     val getMovieList = requestMovieListUseCase(searchQuery).cachedIn(viewModelScope)
 
     fun setSearchQuery(query: String) {
@@ -25,5 +28,9 @@ class HomeViewModel @Inject constructor(
 
     fun onClearQuery() {
         _searchQuery.value = ""
+    }
+
+    fun setIsRefreshing(isRefresh: Boolean) {
+        _isRefreshing.value = isRefresh
     }
 }
