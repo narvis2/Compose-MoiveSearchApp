@@ -56,7 +56,7 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
 
             composable(route = NavigationType.DETAIL_WEB_VIEW.name + "?url={url}") { backStackEntity ->
                 backStackEntity.arguments?.getString("url")?.let { url ->
-                    DetailWebView(navController, url)
+                    DetailWebView(navController = navController, url = url)
                 }
             }
         }
