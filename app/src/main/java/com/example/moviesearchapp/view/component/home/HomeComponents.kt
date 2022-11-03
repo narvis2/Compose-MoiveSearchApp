@@ -1,6 +1,7 @@
 package com.example.moviesearchapp.view.component.home
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -108,7 +109,8 @@ fun MovieSearchBar(
 fun MovieInfoItemView(
     modifier: Modifier = Modifier,
     movieInfoModel: MovieInfoModel,
-    onRootClick: () -> Unit
+    onRootClick: () -> Unit,
+    onActionMoreClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -132,47 +134,61 @@ fun MovieInfoItemView(
             contentScale = ContentScale.Fit
         )
 
-        Column(modifier = modifier
-            .fillMaxSize()
-            .padding(start = 10.dp, top = 5.dp, end = 5.dp, bottom = 5.dp)
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(start = 10.dp, top = 5.dp, bottom = 5.dp)
         ) {
-            Text(
-                text = movieInfoModel.title.htmlToString(),
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+            Column {
+                Text(
+                    text = movieInfoModel.title.htmlToString(),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
                 )
-            )
 
-            RatingBar(
-                value = movieInfoModel.rating,
-                config = RatingBarConfig()
-                    .activeColor(colorResource(id = R.color.orange))
-                    .inactiveColor(Color.LightGray)
-                    .stepSize(StepSize.HALF)
-                    .numStars(5)
-                    .isIndicator(true)
-                    .size(13.dp)
-                    .style(RatingBarStyle.HighLighted)
-                ,
-                onValueChange = {},
-                onRatingChanged = {}
-            )
-            
-            Text(text = movieInfoModel.pubDate, fontSize = 13.sp)
-            
-            Text(
-                text = stringResource(id = R.string.str_director, movieInfoModel.director),
-                fontSize = 13.sp
-            )
+                RatingBar(
+                    value = movieInfoModel.rating,
+                    config = RatingBarConfig()
+                        .activeColor(colorResource(id = R.color.orange))
+                        .inactiveColor(Color.LightGray)
+                        .stepSize(StepSize.HALF)
+                        .numStars(5)
+                        .isIndicator(true)
+                        .size(13.dp)
+                        .style(RatingBarStyle.HighLighted)
+                    ,
+                    onValueChange = {},
+                    onRatingChanged = {}
+                )
 
-            Text(
-                text = if (movieInfoModel.actor.isEmpty()) {
-                    stringResource(id = R.string.str_no_actors)
-                } else {
-                    stringResource(id = R.string.str_actors, movieInfoModel.actor)
-                },
-                fontSize = 13.sp
+                Text(text = movieInfoModel.pubDate, fontSize = 13.sp)
+
+                Text(
+                    text = stringResource(id = R.string.str_director, movieInfoModel.director),
+                    fontSize = 13.sp
+                )
+
+                Text(
+                    text = if (movieInfoModel.actor.isEmpty()) {
+                        stringResource(id = R.string.str_no_actors)
+                    } else {
+                        stringResource(id = R.string.str_actors, movieInfoModel.actor)
+                    },
+                    fontSize = 13.sp
+                )
+            }
+
+            Image(
+                modifier = modifier
+                    .align(Alignment.TopEnd)
+                    .clickable {
+                        onActionMoreClick()
+                    }
+                    .padding(start = 16.dp, bottom = 16.dp, top = 5.dp, end = 5.dp),
+                painter = painterResource(id = R.drawable.btn_more_02),
+                contentDescription = ""
             )
         }
     }
