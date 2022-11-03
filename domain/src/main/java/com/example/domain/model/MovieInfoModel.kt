@@ -8,5 +8,7 @@ data class MovieInfoModel(
     val pubDate: String,
     val director: String,
     val actor: String,
-    val userRating: String,
-)
+    val userRating: Float,
+) {
+    val rating = userRating / 2
+}

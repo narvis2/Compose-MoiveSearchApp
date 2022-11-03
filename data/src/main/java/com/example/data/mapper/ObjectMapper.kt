@@ -8,11 +8,7 @@ object ObjectMapper {
         it.toMovieInfoModel()
     }
 
-    fun List<MovieInfoModel>.toMovieInfoList(): List<MovieInfo> = map {
-        it.toMovieInfo()
-    }
-
-    fun MovieInfo.toMovieInfoModel(): MovieInfoModel = MovieInfoModel(
+    private fun MovieInfo.toMovieInfoModel(): MovieInfoModel = MovieInfoModel(
         title = this.title,
         link = this.link,
         image = this.image,
@@ -20,17 +16,6 @@ object ObjectMapper {
         pubDate = this.pubDate,
         director = this.director,
         actor = this.actor,
-        userRating = this.userRating
-    )
-
-    fun MovieInfoModel.toMovieInfo(): MovieInfo = MovieInfo(
-        title = this.title,
-        link = this.link,
-        image = this.image,
-        subtitle = this.subtitle,
-        pubDate = this.pubDate,
-        director = this.director,
-        actor = this.actor,
-        userRating = this.userRating
+        userRating = this.userRating.toFloat()
     )
 }
