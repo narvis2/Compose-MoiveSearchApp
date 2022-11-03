@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:name=".MovieApplication"
         android:theme="@style/Theme.ComposeMovieSearchApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".view.MainActivity"

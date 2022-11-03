@@ -7,7 +7,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +22,7 @@ import androidx.paging.compose.itemsIndexed
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.component.home.MovieInfoItemView
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
+import com.example.moviesearchapp.view.navigation.NavigationType
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.example.moviesearchapp.view.widgets.LoadingItemView
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -133,10 +133,10 @@ fun HomeScreen(
                                 homeViewModel.setIsRefreshing(false)
                             }
 
-                            itemsIndexed(movieList) { index, movie ->
+                            itemsIndexed(movieList) { _, movie ->
                                 movie?.let {
                                     MovieInfoItemView(movieInfoModel = it) {
-                                        // TODO:: Root Click Callback
+                                        navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${it.link}")
                                     }
                                 }
                             }
