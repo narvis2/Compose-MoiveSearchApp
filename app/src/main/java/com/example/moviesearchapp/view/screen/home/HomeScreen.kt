@@ -1,12 +1,12 @@
 package com.example.moviesearchapp.view.screen.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.gestures.stopScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +25,11 @@ import com.example.moviesearchapp.view.component.home.MovieSearchBar
 import com.example.moviesearchapp.view.navigation.NavigationType
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.example.moviesearchapp.view.widgets.LoadingItemView
+import com.example.moviesearchapp.view.widgets.ScrollTopButton
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -39,6 +41,9 @@ fun HomeScreen(
     val searchQuery = homeViewModel.searchQuery.collectAsState()
     val movieList = homeViewModel.getMovieList.collectAsLazyPagingItems()
     val isRefreshing = homeViewModel.isRefreshing.collectAsState()
+
+    val scrollState = rememberLazyListState()
+    val scrollCoroutineScope = rememberCoroutineScope()
 
     val focusManager = LocalFocusManager.current
 
@@ -67,7 +72,18 @@ fun HomeScreen(
                 backgroundColor = Color.White
             )
         },
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        floatingActionButton = {
+            // 스크롤 내렸을 때 Top Button Click 시 LazyColumn 최상위로 이동
+            if (remember { derivedStateOf { scrollState.firstVisibleItemIndex } }.value >= 1) {
+                ScrollTopButton {
+                    scrollCoroutineScope.launch {
+                        scrollState.animateScrollToItem(index = 0)
+                    }
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End,
     ) {
         Column(
             modifier = Modifier
@@ -103,7 +119,7 @@ fun HomeScreen(
                     movieList.refresh()
                 }
             ) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(modifier = Modifier.fillMaxSize(), state = scrollState) {
                     when {
                         // 초기 load 또는 새로고침이 실패하면 -> ERROR
                         movieList.loadState.source.refresh is LoadState.Error && movieList.itemCount == 0 -> {

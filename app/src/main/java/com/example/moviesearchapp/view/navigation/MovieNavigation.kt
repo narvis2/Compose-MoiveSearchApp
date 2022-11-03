@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
-import com.example.moviesearchapp.view.screen.detail.DetailWebView
+import com.example.moviesearchapp.view.screen.detail.DetailWebViewScreen
 import com.example.moviesearchapp.view.screen.home.HomeScreen
 import com.example.moviesearchapp.view.widgets.NetworkOfflineDialog
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -56,7 +56,7 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
 
             composable(route = NavigationType.DETAIL_WEB_VIEW.name + "?url={url}") { backStackEntity ->
                 backStackEntity.arguments?.getString("url")?.let { url ->
-                    DetailWebView(navController = navController, url = url)
+                    DetailWebViewScreen(navController = navController, url = url)
                 }
             }
         }
