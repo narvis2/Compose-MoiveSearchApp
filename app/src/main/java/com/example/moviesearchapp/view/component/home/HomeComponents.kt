@@ -1,6 +1,8 @@
 package com.example.moviesearchapp.view.component.home
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,13 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
+import com.example.moviesearchapp.view.utils.htmlToString
 
 @Composable
 fun MovieSearchBar(
@@ -79,9 +86,7 @@ fun MovieSearchBar(
             enabled = searchValue.isNotEmpty()
         ) {
             Text(
-                text = "검색",
-                textAlign = TextAlign.Center,
-                style = TextStyle(
+                text = "검색", textAlign = TextAlign.Center, style = TextStyle(
                     if (searchValue.length < 2) colorResource(id = R.color.red) else colorResource(
                         id = R.color.orange
                     )
@@ -89,4 +94,37 @@ fun MovieSearchBar(
             )
         }
     }
+}
+
+@Composable
+fun MovieInfoItemView(
+    modifier: Modifier = Modifier,
+    movieInfoModel: MovieInfoModel,
+    onRootClick: (MovieInfoModel) -> Unit
+) {
+    Row(modifier = modifier
+        .clickable {
+            onRootClick(movieInfoModel)
+        }
+        .padding(10.dp)
+        .fillMaxWidth()
+        .wrapContentHeight()
+    ) {
+        Image(
+            modifier = modifier.size(90.dp),
+            painter = painterResource(id = R.drawable.search_none),
+            contentDescription = ""
+        )
+
+        Column(modifier = modifier.fillMaxSize()) {
+            Text(
+                text = movieInfoModel.title.htmlToString(),
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+            )
+        }
+    }
+    Divider(modifier = Modifier.fillMaxWidth())
 }

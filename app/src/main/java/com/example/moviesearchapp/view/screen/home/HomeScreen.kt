@@ -6,22 +6,26 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemsIndexed
 import com.example.moviesearchapp.R
+import com.example.moviesearchapp.view.component.home.MovieInfoItemView
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import timber.log.Timber
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -33,6 +37,10 @@ fun HomeScreen(
     val searchQuery = homeViewModel.searchQuery.collectAsState()
     val movieList = homeViewModel.getMovieList.collectAsLazyPagingItems()
     val isRefreshing = homeViewModel.isRefreshing.collectAsState()
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
         topBar = {
@@ -54,18 +62,51 @@ fun HomeScreen(
             MovieSearchBar(
                 searchValue = searchQuery.value,
                 onChangeSearchValue = homeViewModel::setSearchQuery,
-                onSubmitButton = { /* TODO */ },
-                onSearchButtonClick = {/* TODO */},
+                onSubmitButton = {
+                    coroutineScope.launch {
+                        focusManager.clearFocus()
+                        if (searchQuery.value.isEmpty()) {
+                            scaffoldState.snackbarHostState.showSnackbar("영화 제목을 검색해 주세요.")
+                            return@launch
+                        }
+
+                        if (isRefreshing.value) {
+                            homeViewModel.setIsRefreshing(false)
+                        }
+
+                        movieList.refresh()
+                    }
+                },
+                onSearchButtonClick = {
+                    coroutineScope.launch {
+                        focusManager.clearFocus()
+                        if (searchQuery.value.isEmpty()) {
+                            scaffoldState.snackbarHostState.showSnackbar("영화 제목을 검색해 주세요.")
+                            return@launch
+                        }
+
+                        if (isRefreshing.value) {
+                            homeViewModel.setIsRefreshing(false)
+                        }
+
+                        movieList.refresh()
+                    }
+                },
             ) {
                 homeViewModel.onClearQuery()
             }
 
-            Divider(modifier = Modifier.fillMaxWidth())
+            Divider(modifier = Modifier.fillMaxWidth(), color = colorResource(id = R.color.orange))
             Spacer(modifier = Modifier.height(20.dp))
 
             SwipeRefresh(
+                modifier = Modifier.padding(horizontal = 10.dp),
                 state = rememberSwipeRefreshState(isRefreshing.value),
                 onRefresh = {
+                    if (isRefreshing.value) {
+                        homeViewModel.setIsRefreshing(false)
+                    }
+
                     homeViewModel.setIsRefreshing(true)
                     movieList.refresh()
                 }
@@ -100,9 +141,11 @@ fun HomeScreen(
                                 homeViewModel.setIsRefreshing(false)
                             }
 
-                            items(movieList) { movie ->
+                            itemsIndexed(movieList) { index, movie ->
                                 movie?.let {
-                                    Timber.e("🍎 MovieInfoModel -> $it")
+                                    MovieInfoItemView(movieInfoModel = it) {
+                                        // TODO:: Root Click Callback
+                                    }
                                 }
                             }
                         }
@@ -111,7 +154,9 @@ fun HomeScreen(
                         else -> {
                             item {
                                 Column(
-                                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
                                     verticalArrangement = Arrangement.Center,
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
