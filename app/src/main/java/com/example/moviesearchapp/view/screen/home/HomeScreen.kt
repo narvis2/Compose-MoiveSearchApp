@@ -151,8 +151,13 @@ fun HomeScreen(
 
                             itemsIndexed(movieList) { _, movie ->
                                 movie?.let {
-                                    MovieInfoItemView(movieInfoModel = it) {
-                                        navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${it.link}")
+                                    MovieInfoItemView(
+                                        movieInfoModel = it,
+                                        onRootClick = {
+                                            navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${it.link}")
+                                        }
+                                    ) {
+                                        // TODO:: Show BottomSheetDialog
                                     }
                                 }
                             }
