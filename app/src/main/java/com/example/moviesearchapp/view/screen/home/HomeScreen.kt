@@ -23,6 +23,7 @@ import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.component.home.MovieInfoItemView
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
+import com.example.moviesearchapp.view.widgets.LoadingItemView
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
@@ -153,16 +154,7 @@ fun HomeScreen(
                         // Loading
                         else -> {
                             item {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentHeight(),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                ) {
-                                    Spacer(modifier = Modifier.height(132.dp))
-                                    CircularProgressIndicator()
-                                }
+                                LoadingItemView()
                             }
                         }
                     }
