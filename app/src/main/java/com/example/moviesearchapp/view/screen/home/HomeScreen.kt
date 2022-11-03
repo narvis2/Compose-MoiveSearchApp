@@ -1,7 +1,6 @@
 package com.example.moviesearchapp.view.screen.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.gestures.stopScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -23,6 +22,7 @@ import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.component.home.MovieInfoItemView
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
 import com.example.moviesearchapp.view.navigation.NavigationType
+import com.example.moviesearchapp.view.utils.htmlToString
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.example.moviesearchapp.view.widgets.LoadingItemView
 import com.example.moviesearchapp.view.widgets.ScrollTopButton
@@ -157,7 +157,7 @@ fun HomeScreen(
                                             navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${it.link}")
                                         }
                                     ) {
-                                        // TODO:: Show BottomSheetDialog
+                                        navController.navigate(NavigationType.MORE_BOTTOM_SHEET.name + "?title=${it.title.htmlToString()}")
                                     }
                                 }
                             }
