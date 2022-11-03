@@ -108,12 +108,12 @@ fun MovieSearchBar(
 fun MovieInfoItemView(
     modifier: Modifier = Modifier,
     movieInfoModel: MovieInfoModel,
-    onRootClick: (MovieInfoModel) -> Unit
+    onRootClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .clickable {
-                onRootClick(movieInfoModel)
+                onRootClick()
             }
             .padding(10.dp)
             .fillMaxWidth()

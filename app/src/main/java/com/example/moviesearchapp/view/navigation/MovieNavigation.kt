@@ -9,8 +9,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.plusAssign
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
+import com.example.moviesearchapp.view.screen.detail.DetailWebView
 import com.example.moviesearchapp.view.screen.home.HomeScreen
 import com.example.moviesearchapp.view.widgets.NetworkOfflineDialog
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -21,8 +23,10 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 @Composable
 fun MovieNavigation(mainViewModel: MainViewModel) {
 
+    val navController = rememberNavController()
     val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberNavController(bottomSheetNavigator)
+
+    navController.navigatorProvider += bottomSheetNavigator
 
     val networkState by mainViewModel.networkState.collectAsState(initial = NetworkState.None)
     // Snack Bar
@@ -41,13 +45,19 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
         )
     }
 
-    return ModalBottomSheetLayout(
+    ModalBottomSheetLayout(
         bottomSheetNavigator = bottomSheetNavigator,
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp),
     ) {
         NavHost(navController = navController, startDestination = NavigationType.HOME_SCREEN.name) {
             composable(route = NavigationType.HOME_SCREEN.name) {
                 HomeScreen(navController = navController, scaffoldState = scaffoldState)
+            }
+
+            composable(route = NavigationType.DETAIL_WEB_VIEW.name + "?url={url}") { backStackEntity ->
+                backStackEntity.arguments?.getString("url")?.let { url ->
+                    DetailWebView(navController, url)
+                }
             }
         }
     }

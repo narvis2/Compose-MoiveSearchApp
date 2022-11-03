@@ -8,4 +8,5 @@
     <string name="str_director">감독 : %1$s</string>
     <string name="str_actors">배우 : %1$s</string>
     <string name="str_no_actors">등록된 배우가 없습니다.</string>
+    <string name="str_movie_detail">영화 상세</string>
 </resources>
