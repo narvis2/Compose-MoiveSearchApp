@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -26,7 +27,7 @@ import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.example.moviesearchapp.view.widgets.LoadingItemView
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -39,9 +40,23 @@ fun HomeScreen(
     val movieList = homeViewModel.getMovieList.collectAsLazyPagingItems()
     val isRefreshing = homeViewModel.isRefreshing.collectAsState()
 
-    val coroutineScope = rememberCoroutineScope()
-
     val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(key1 = Unit) {
+        homeViewModel.searchClick.collectLatest {
+            focusManager.clearFocus()
+            if (searchQuery.value.isEmpty()) {
+                scaffoldState.snackbarHostState.showSnackbar("영화 제목을 검색해 주세요.")
+                return@collectLatest
+            }
+
+            if (isRefreshing.value) {
+                homeViewModel.setIsRefreshing(false)
+            }
+
+            movieList.refresh()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -64,34 +79,10 @@ fun HomeScreen(
                 searchValue = searchQuery.value,
                 onChangeSearchValue = homeViewModel::setSearchQuery,
                 onSubmitButton = {
-                    coroutineScope.launch {
-                        focusManager.clearFocus()
-                        if (searchQuery.value.isEmpty()) {
-                            scaffoldState.snackbarHostState.showSnackbar("영화 제목을 검색해 주세요.")
-                            return@launch
-                        }
-
-                        if (isRefreshing.value) {
-                            homeViewModel.setIsRefreshing(false)
-                        }
-
-                        movieList.refresh()
-                    }
+                    homeViewModel.onSearchClick()
                 },
                 onSearchButtonClick = {
-                    coroutineScope.launch {
-                        focusManager.clearFocus()
-                        if (searchQuery.value.isEmpty()) {
-                            scaffoldState.snackbarHostState.showSnackbar("영화 제목을 검색해 주세요.")
-                            return@launch
-                        }
-
-                        if (isRefreshing.value) {
-                            homeViewModel.setIsRefreshing(false)
-                        }
-
-                        movieList.refresh()
-                    }
+                    homeViewModel.onSearchClick()
                 },
             ) {
                 homeViewModel.onClearQuery()
