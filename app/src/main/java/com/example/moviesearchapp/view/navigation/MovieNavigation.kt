@@ -63,8 +63,10 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
                 }
             }
 
-            bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name) {
-                MovieMoreBottomSheetDialog(navController = navController)
+            bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name + "?title={title}") { backStackEntity ->
+                backStackEntity.arguments?.getString("title")?.let { title ->
+                    MovieMoreBottomSheetDialog(navController = navController, title = title)
+                }
             }
         }
     }
