@@ -10,13 +10,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
+import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
 import com.example.moviesearchapp.view.screen.detail.DetailWebViewScreen
 import com.example.moviesearchapp.view.screen.home.HomeScreen
+import com.example.moviesearchapp.view.screen.more.MovieMoreBottomSheetDialog
 import com.example.moviesearchapp.view.widgets.NetworkOfflineDialog
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.navigation.material.bottomSheet
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
@@ -58,6 +61,10 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
                 backStackEntity.arguments?.getString("url")?.let { url ->
                     DetailWebViewScreen(navController = navController, url = url)
                 }
+            }
+
+            bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name) {
+                MovieMoreBottomSheetDialog(navController = navController)
             }
         }
     }

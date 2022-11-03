@@ -157,7 +157,7 @@ fun HomeScreen(
                                             navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${it.link}")
                                         }
                                     ) {
-                                        // TODO:: Show BottomSheetDialog
+                                        navController.navigate(NavigationType.MORE_BOTTOM_SHEET.name)
                                     }
                                 }
                             }
