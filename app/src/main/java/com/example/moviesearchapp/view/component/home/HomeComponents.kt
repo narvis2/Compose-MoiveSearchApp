@@ -1,9 +1,10 @@
 package com.example.moviesearchapp.view.component.home
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -12,7 +13,10 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,6 +27,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.utils.htmlToString
@@ -117,15 +123,21 @@ fun MovieInfoItemView(
             .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(movieInfoModel.image)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(id = R.drawable.search_none),
+            error = painterResource(id = R.drawable.search_none),
+            contentDescription = "",
             modifier = modifier.size(90.dp),
-            painter = painterResource(id = R.drawable.search_none),
-            contentDescription = ""
+            contentScale = ContentScale.Fit
         )
 
         Column(modifier = modifier
             .fillMaxSize()
-            .padding(5.dp)
+            .padding(start = 10.dp, top = 5.dp, end = 5.dp, bottom = 5.dp)
         ) {
             Text(
                 text = movieInfoModel.title.htmlToString(),
