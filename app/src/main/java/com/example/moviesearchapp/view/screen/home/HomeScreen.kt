@@ -18,6 +18,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
+import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import timber.log.Timber
@@ -77,11 +78,24 @@ fun HomeScreen(
                                 homeViewModel.setIsRefreshing(false)
                             }
 
-                            // TODO:: SHOW ERROR VIEW
+                            item {
+                                ErrorOrEmptyView()
+                            }
                         }
 
                         // List 가 비어있는 경우 -> EMPTY
                         movieList.loadState.source.refresh is LoadState.NotLoading && movieList.itemCount == 0 -> {
+                            if (isRefreshing.value) {
+                                homeViewModel.setIsRefreshing(false)
+                            }
+
+                            item {
+                                ErrorOrEmptyView()
+                            }
+                        }
+
+                        // Local Db 또는 Remote 에서 새로 고침이 성공한 경우 -> VIEW
+                        movieList.loadState.source.refresh is LoadState.NotLoading -> {
                             if (isRefreshing.value) {
                                 homeViewModel.setIsRefreshing(false)
                             }
@@ -93,22 +107,15 @@ fun HomeScreen(
                             }
                         }
 
-                        // Local Db 또는 Remote 에서 새로 고침이 성공한 경우 -> VIEW
-                        movieList.loadState.source.refresh is LoadState.NotLoading -> {
-                            if (isRefreshing.value) {
-                                homeViewModel.setIsRefreshing(false)
-                            }
-                            
-                        }
-
                         // Loading
                         else -> {
                             item {
                                 Column(
-                                    modifier = Modifier.fillMaxSize(),
+                                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
                                     verticalArrangement = Arrangement.Center,
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
+                                    Spacer(modifier = Modifier.height(132.dp))
                                     CircularProgressIndicator()
                                 }
                             }

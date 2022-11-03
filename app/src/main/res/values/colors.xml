@@ -12,4 +12,5 @@
     <color name="yellow">#FFEB3B</color>
     <color name="transparency_black">#55000000</color>
     <color name="button">#152348</color>
+    <color name="text_gray">#777777</color>
 </resources>
