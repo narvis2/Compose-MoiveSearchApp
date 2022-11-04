@@ -2,13 +2,11 @@ package com.example.moviesearchapp.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.view.network.NetworkChecker
 import com.example.moviesearchapp.view.network.NetworkState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +17,9 @@ class MainViewModel @Inject constructor(
 
     private val _networkState = MutableSharedFlow<NetworkState>(replay = 1)
     val networkState: SharedFlow<NetworkState> = _networkState.asSharedFlow()
+
+    private val _currentMovieInfo = MutableStateFlow<MovieInfoModel?>(null)
+    val currentMovieInfo = _currentMovieInfo.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -42,6 +43,10 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setMovieInfoModel(model: MovieInfoModel) {
+        _currentMovieInfo.value = model
     }
 
     override fun onCleared() {

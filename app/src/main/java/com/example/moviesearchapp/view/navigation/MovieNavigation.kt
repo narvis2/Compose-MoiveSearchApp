@@ -34,6 +34,8 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
     // Snack Bar
     val scaffoldState = rememberScaffoldState()
 
+    val currentMovieInfoModel = mainViewModel.currentMovieInfo.collectAsState()
+
     NetworkOfflineDialog(networkState = networkState) {
         if (scaffoldState.snackbarHostState.currentSnackbarData != null) return@NetworkOfflineDialog
 
@@ -53,7 +55,9 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
     ) {
         NavHost(navController = navController, startDestination = NavigationType.HOME_SCREEN.name) {
             composable(route = NavigationType.HOME_SCREEN.name) {
-                HomeScreen(navController = navController, scaffoldState = scaffoldState)
+                HomeScreen(navController = navController, scaffoldState = scaffoldState) { model ->
+                    mainViewModel.setMovieInfoModel(model)
+                }
             }
 
             composable(route = NavigationType.DETAIL_WEB_VIEW.name + "?url={url}") { backStackEntity ->
@@ -62,9 +66,9 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
                 }
             }
 
-            bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name + "?title={title}") { backStackEntity ->
-                backStackEntity.arguments?.getString("title")?.let { title ->
-                    MovieMoreBottomSheetDialog(navController = navController, title = title)
+            bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name) {
+                currentMovieInfoModel.value?.let { currentModel ->
+                    MovieMoreBottomSheetDialog(navController = navController, movieInfoModel = currentModel)
                 }
             }
         }
