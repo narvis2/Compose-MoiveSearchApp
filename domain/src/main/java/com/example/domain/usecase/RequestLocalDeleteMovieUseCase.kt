@@ -8,7 +8,7 @@ class RequestLocalDeleteMovieUseCase @Inject constructor(
     private val naverRepository: NaverRepository
 ) {
 
-    suspend operator fun invoke(movieInfoModel: MovieInfoModel): Long {
+    suspend operator fun invoke(movieInfoModel: MovieInfoModel): Int {
         return naverRepository.requestLocalDeleteMovie(movieInfoModel)
     }
 }

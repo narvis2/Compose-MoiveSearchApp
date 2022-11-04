@@ -12,5 +12,5 @@ interface LocalDataSource {
 
     suspend fun deleteAll()
 
-    suspend fun deleteMovie(movieEntity: MovieEntity): Long
+    suspend fun deleteMovie(movieEntity: MovieEntity): Int
 }
