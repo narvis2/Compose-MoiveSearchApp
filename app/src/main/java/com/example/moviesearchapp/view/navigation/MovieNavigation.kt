@@ -10,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
-import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
 import com.example.moviesearchapp.view.screen.detail.DetailWebViewScreen
