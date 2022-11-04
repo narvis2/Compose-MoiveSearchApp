@@ -1,6 +1,7 @@
 package com.example.moviesearchapp.di
 
 import com.example.data.repository.NaverRepositoryImpl
+import com.example.data.repository.datasource.LocalDataSource
 import com.example.data.repository.datasource.RemoteDataSource
 import com.example.domain.repository.NaverRepository
 import dagger.Module
@@ -16,6 +17,7 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideNaverRepository(
-        remoteDataSource: RemoteDataSource
-    ): NaverRepository = NaverRepositoryImpl(remoteDataSource)
+        remoteDataSource: RemoteDataSource,
+        localDataSource: LocalDataSource
+    ): NaverRepository = NaverRepositoryImpl(remoteDataSource, localDataSource)
 }
