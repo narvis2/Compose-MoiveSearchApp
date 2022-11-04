@@ -7,4 +7,14 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface NaverRepository {
     fun requestMovieList(query: StateFlow<String>): Flow<PagingData<MovieInfoModel>>
+
+    fun requestLocalMovieList(): Flow<List<MovieInfoModel>>
+
+    suspend fun requestLocalMovie(id: Long): MovieInfoModel
+
+    suspend fun requestInsertMovie(movieInfoModel: MovieInfoModel): Long
+
+    suspend fun requestLocalDeleteMovieAll()
+
+    suspend fun requestLocalDeleteMovie(movieInfoModel: MovieInfoModel): Long
 }

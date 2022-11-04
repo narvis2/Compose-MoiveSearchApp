@@ -13,6 +13,8 @@ data class MovieEntity(
     val id: Long = 0L,
     @ColumnInfo(name = "movie_title")
     val title: String,
+    @ColumnInfo(name = "movie_link")
+    val link: String,
     @ColumnInfo(name = "movie_image")
     val image: String,
     @ColumnInfo(name = "movie_subtitle")

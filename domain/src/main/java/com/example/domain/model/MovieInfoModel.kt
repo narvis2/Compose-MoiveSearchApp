@@ -1,5 +1,7 @@
 package com.example.domain.model
 
+import org.joda.time.DateTime
+
 data class MovieInfoModel(
     val title: String,
     val link: String,
@@ -9,6 +11,8 @@ data class MovieInfoModel(
     val director: String,
     val actor: String,
     val userRating: Float,
+    val insertDateTime: DateTime = DateTime.now(),
+    val updateTime: DateTime? = null
 ) {
     val rating = userRating / 2
 }
