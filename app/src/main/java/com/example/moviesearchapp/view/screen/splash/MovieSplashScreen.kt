@@ -33,11 +33,11 @@ fun MovieSplashScreen(navController: NavController) {
 
     LaunchedEffect(key1 = Unit) {
         scale.animateTo(
-            targetValue = 0.9f,
+            targetValue = 1.2f,
             animationSpec = tween(
                 durationMillis = 800, // Animation 지속 시간
                 easing = { // 시작과 끝 사이를 보간하는 데 사용되는 이징 곡선
-                    OvershootInterpolator(8f).getInterpolation(it)
+                    OvershootInterpolator(12f).getInterpolation(it)
                 }
             )
         )
