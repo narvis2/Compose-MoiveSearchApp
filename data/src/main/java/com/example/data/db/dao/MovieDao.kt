@@ -24,5 +24,5 @@ interface MovieDao {
     suspend fun deleteAll()
 
     @Delete
-    suspend fun deleteMovie(movieEntity: MovieEntity): Long
+    suspend fun deleteMovie(movieEntity: MovieEntity): Int
 }
