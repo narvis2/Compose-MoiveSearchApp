@@ -10,17 +10,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.compose.ui.unit.dp
+import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
+import com.example.moviesearchapp.view.utils.htmlToString
 import com.example.moviesearchapp.view.widgets.BottomSheetHeader
 import com.example.moviesearchapp.view.widgets.BottomSheetItem
 
 @Composable
 fun MovieMoreBottomSheetDialog(
     navController: NavController,
-    title: String
+    movieInfoModel: MovieInfoModel,
 ) {
         Column() {
-            BottomSheetHeader(title = title) {
+            BottomSheetHeader(title = movieInfoModel.title.htmlToString()) {
                 navController.popBackStack()
             }
 

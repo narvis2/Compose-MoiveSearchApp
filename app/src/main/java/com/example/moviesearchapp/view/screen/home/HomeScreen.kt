@@ -18,11 +18,11 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.component.home.MovieInfoItemView
 import com.example.moviesearchapp.view.component.home.MovieSearchBar
 import com.example.moviesearchapp.view.navigation.NavigationType
-import com.example.moviesearchapp.view.utils.htmlToString
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.example.moviesearchapp.view.widgets.LoadingItemView
 import com.example.moviesearchapp.view.widgets.ScrollTopButton
@@ -37,6 +37,7 @@ fun HomeScreen(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState,
+    onSaveCurrentMovie: (MovieInfoModel) -> Unit
 ) {
     val searchQuery = homeViewModel.searchQuery.collectAsState()
     val movieList = homeViewModel.getMovieList.collectAsLazyPagingItems()
@@ -157,7 +158,8 @@ fun HomeScreen(
                                             navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${it.link}")
                                         }
                                     ) {
-                                        navController.navigate(NavigationType.MORE_BOTTOM_SHEET.name + "?title=${it.title.htmlToString()}")
+                                        onSaveCurrentMovie(it)
+                                        navController.navigate(NavigationType.MORE_BOTTOM_SHEET.name)
                                     }
                                 }
                             }
