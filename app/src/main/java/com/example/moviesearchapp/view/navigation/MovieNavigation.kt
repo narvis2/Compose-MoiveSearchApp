@@ -15,6 +15,7 @@ import com.example.moviesearchapp.view.network.NetworkState
 import com.example.moviesearchapp.view.screen.detail.DetailWebViewScreen
 import com.example.moviesearchapp.view.screen.home.HomeScreen
 import com.example.moviesearchapp.view.screen.more.MovieMoreBottomSheetDialog
+import com.example.moviesearchapp.view.screen.splash.MovieSplashScreen
 import com.example.moviesearchapp.view.widgets.NetworkOfflineDialog
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -53,7 +54,11 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
         bottomSheetNavigator = bottomSheetNavigator,
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp),
     ) {
-        NavHost(navController = navController, startDestination = NavigationType.HOME_SCREEN.name) {
+        NavHost(navController = navController, startDestination = NavigationType.SPLASH_SCREEN.name) {
+            composable(route = NavigationType.SPLASH_SCREEN.name) {
+                MovieSplashScreen(navController = navController)
+            }
+
             composable(route = NavigationType.HOME_SCREEN.name) {
                 HomeScreen(navController = navController, scaffoldState = scaffoldState) { model ->
                     mainViewModel.setMovieInfoModel(model)
