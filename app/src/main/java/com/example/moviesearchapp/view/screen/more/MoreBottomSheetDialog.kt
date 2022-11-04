@@ -1,11 +1,13 @@
 package com.example.moviesearchapp.view.screen.more
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.compose.ui.unit.dp
 import com.example.moviesearchapp.R
@@ -18,20 +20,25 @@ fun MovieMoreBottomSheetDialog(
     title: String
 ) {
         Column() {
-            BottomSheetHeader(title = title)
+            BottomSheetHeader(title = title) {
+                navController.popBackStack()
+            }
 
-            Divider(modifier = Modifier.fillMaxWidth(), color = Color.LightGray)
-
-            BottomSheetItem(icon = R.drawable.btn_search_02, title = "저장") {
+            BottomSheetItem(
+                imageVector = Icons.Default.Save,
+                title = stringResource(id = R.string.str_save),
+                color = colorResource(id = R.color.orange)
+            ) {
                 
             }
-            BottomSheetItem(icon = R.drawable.btn_search_02, title = "저장 삭제") {
+            BottomSheetItem(
+                imageVector = Icons.Default.Delete,
+                title = stringResource(id = R.string.str_delete),
+                color = colorResource(id = R.color.red)
+            ) {
 
             }
-            BottomSheetItem(icon = R.drawable.btn_search_02, title = "??") {
 
-            }
-            
             Spacer(modifier = Modifier.height(20.dp))
         }
 

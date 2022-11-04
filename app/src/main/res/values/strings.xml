@@ -9,4 +9,6 @@
     <string name="str_actors">배우 : %1$s</string>
     <string name="str_no_actors">등록된 배우가 없습니다.</string>
     <string name="str_movie_detail">영화 상세</string>
+    <string name="str_save">저장</string>
+    <string name="str_delete">삭제</string>
 </resources>
