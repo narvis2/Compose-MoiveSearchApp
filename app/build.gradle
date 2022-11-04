@@ -114,6 +114,11 @@ dependencies {
     implementation "androidx.paging:paging-compose:1.0.0-alpha17"
     testImplementation "androidx.paging:paging-common:$paging_version"
 
+    // Room
+    implementation "androidx.room:room-runtime:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
+
     implementation 'io.github.a914-gowtham:compose-ratingbar:1.2.3'
 
     testImplementation 'junit:junit:4.13.2'
