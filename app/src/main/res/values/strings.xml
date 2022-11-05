@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Compose-MovieSearchApp</string>
     <string name="home_title">영화 찾기 앱</string>
+    <string name="favorite_title">즐겨찾기</string>
     <string name="movie_search_helper">영화 제목을 입력해 주세요.</string>
     <string name="movie_search_place_holder">영화 제목</string>
     <string name="str_retry_disabled_network">연결이 원활하지 않습니다.\n네트워크 연결 상태를 확인하거나\n다시 시도해 주세요.</string>
@@ -11,4 +12,6 @@
     <string name="str_movie_detail">영화 상세</string>
     <string name="str_save">저장</string>
     <string name="str_delete">삭제</string>
+    <string name="str_home">홈</string>
+    <string name="str_favorite">즐겨찾기</string>
 </resources>

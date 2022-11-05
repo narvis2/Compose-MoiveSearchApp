@@ -6,13 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
 import com.example.moviesearchapp.view.screen.detail.DetailWebViewScreen
+import com.example.moviesearchapp.view.screen.favorite.FavoriteScreen
 import com.example.moviesearchapp.view.screen.home.HomeScreen
 import com.example.moviesearchapp.view.screen.more.MovieMoreBottomSheetDialog
 import com.example.moviesearchapp.view.screen.splash.MovieSplashScreen
@@ -24,9 +25,8 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MovieNavigation(mainViewModel: MainViewModel) {
+fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostController) {
 
-    val navController = rememberNavController()
     val bottomSheetNavigator = rememberBottomSheetNavigator()
 
     navController.navigatorProvider += bottomSheetNavigator
@@ -69,6 +69,10 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
                 backStackEntity.arguments?.getString("url")?.let { url ->
                     DetailWebViewScreen(navController = navController, url = url)
                 }
+            }
+            
+            composable(route = NavigationType.FAVORITE_SCREEN.name) {
+                FavoriteScreen(navController = navController, scaffoldState = scaffoldState)
             }
 
             bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name) {
