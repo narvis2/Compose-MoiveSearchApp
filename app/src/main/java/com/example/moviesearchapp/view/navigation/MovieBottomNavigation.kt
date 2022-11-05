@@ -50,11 +50,7 @@ fun MovieBottomNavigation(navController: NavHostController) {
             bottomBarState.value = true
         }
 
-        NavigationType.DETAIL_WEB_VIEW.name -> {
-            bottomBarState.value = false
-        }
-
-        NavigationType.SPLASH_SCREEN.name -> {
+        else -> {
             bottomBarState.value = false
         }
     }
