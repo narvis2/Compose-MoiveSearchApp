@@ -6,13 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.plusAssign
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
 import com.example.moviesearchapp.view.screen.detail.DetailWebViewScreen
+import com.example.moviesearchapp.view.screen.favorite.FavoriteScreen
 import com.example.moviesearchapp.view.screen.home.HomeScreen
 import com.example.moviesearchapp.view.screen.more.MovieMoreBottomSheetDialog
 import com.example.moviesearchapp.view.screen.splash.MovieSplashScreen
@@ -24,9 +26,8 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MovieNavigation(mainViewModel: MainViewModel) {
+fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostController) {
 
-    val navController = rememberNavController()
     val bottomSheetNavigator = rememberBottomSheetNavigator()
 
     navController.navigatorProvider += bottomSheetNavigator
@@ -70,10 +71,27 @@ fun MovieNavigation(mainViewModel: MainViewModel) {
                     DetailWebViewScreen(navController = navController, url = url)
                 }
             }
+            
+            composable(route = NavigationType.FAVORITE_SCREEN.name) {
+                FavoriteScreen(navController = navController, scaffoldState = scaffoldState) { model ->
+                    mainViewModel.setMovieInfoModel(model)
+                }
+            }
 
-            bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name) {
+            bottomSheet(
+                route = NavigationType.MORE_BOTTOM_SHEET.name + "?isSave={isSave}",
+                arguments = listOf(
+                    navArgument("isSave") {
+                        defaultValue = true
+                    }
+                )
+            ) { backStackEntity ->
                 currentMovieInfoModel.value?.let { currentModel ->
-                    MovieMoreBottomSheetDialog(navController = navController, movieInfoModel = currentModel)
+                    MovieMoreBottomSheetDialog(
+                        navController = navController,
+                        movieInfoModel = currentModel,
+                        isSave = backStackEntity.arguments?.getBoolean("isSave") ?: true
+                    )
                 }
             }
         }

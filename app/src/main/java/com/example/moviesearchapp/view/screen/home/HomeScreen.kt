@@ -129,7 +129,7 @@ fun HomeScreen(
                             }
 
                             item {
-                                ErrorOrEmptyView()
+                                ErrorOrEmptyView(false)
                             }
                         }
 
@@ -140,7 +140,7 @@ fun HomeScreen(
                             }
 
                             item {
-                                ErrorOrEmptyView()
+                                ErrorOrEmptyView(false)
                             }
                         }
 

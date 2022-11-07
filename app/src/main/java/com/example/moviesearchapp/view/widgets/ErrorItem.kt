@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.example.moviesearchapp.R
 
 @Composable
-fun ErrorOrEmptyView() {
+fun ErrorOrEmptyView(isFavorite: Boolean) {
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -28,7 +28,7 @@ fun ErrorOrEmptyView() {
         Spacer(modifier = Modifier.height(15.7.dp))
 
         Text(
-            text = stringResource(id = R.string.no_result),
+            text = stringResource(id = if (!isFavorite) R.string.no_result else R.string.no_favorite),
             style = TextStyle(
                 color = colorResource(id = R.color.text_gray),
                 fontSize = 14.sp,

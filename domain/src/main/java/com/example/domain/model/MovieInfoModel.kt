@@ -3,6 +3,7 @@ package com.example.domain.model
 import org.joda.time.DateTime
 
 data class MovieInfoModel(
+    val id: Long = 0L,
     val title: String,
     val link: String,
     val image: String,

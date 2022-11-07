@@ -4,6 +4,7 @@ import android.os.Build
 import android.text.Html
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -21,7 +22,7 @@ fun String.htmlToString(): String {
     }
 }
 
-// Lifecycle 이 필요한 경우
+// Lifecycle 이 필요한 경우 and Dispose 일 경우 Job 해제
 @Composable
 inline fun <reified T> Flow<T>.observeWithLifecycle(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
@@ -37,6 +38,22 @@ inline fun <reified T> Flow<T>.observeWithLifecycle(
 
         onDispose {
             job.cancel()
+        }
+    }
+}
+
+// Lifecycle 이 필요한 경우 상태 공유
+@Composable
+inline fun <reified T> Flow<T>.observeOnLifecycle(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+    noinline action: suspend (T) -> Unit
+) {
+    LaunchedEffect(key1 = Unit) {
+        lifecycleOwner.lifecycleScope.launch {
+            flowWithLifecycle(lifecycleOwner.lifecycle, minActiveState).collect {
+                action(it)
+            }
         }
     }
 }

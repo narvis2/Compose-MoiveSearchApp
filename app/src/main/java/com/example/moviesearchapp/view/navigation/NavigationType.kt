@@ -4,5 +4,6 @@ enum class NavigationType {
     SPLASH_SCREEN,
     HOME_SCREEN,
     DETAIL_WEB_VIEW,
-    MORE_BOTTOM_SHEET
+    MORE_BOTTOM_SHEET,
+    FAVORITE_SCREEN
 }

@@ -24,6 +24,7 @@ fun MovieMoreBottomSheetDialog(
     viewModel: MoreBottomSheetDialogViewModel = hiltViewModel(),
     navController: NavController,
     movieInfoModel: MovieInfoModel,
+    isSave: Boolean
 ) {
     Column() {
         BottomSheetHeader(title = movieInfoModel.title.htmlToString()) {
@@ -31,21 +32,17 @@ fun MovieMoreBottomSheetDialog(
         }
 
         BottomSheetItem(
-            imageVector = Icons.Default.Save,
-            title = stringResource(id = R.string.str_save),
-            color = colorResource(id = R.color.orange)
+            imageVector = if (isSave) Icons.Default.Save else Icons.Default.Delete,
+            title = stringResource(id = if (isSave) R.string.str_save else R.string.str_delete),
+            color = colorResource(id = if (isSave) R.color.orange else R.color.red)
         ) {
-            viewModel.requestInsertMovie(movieInfoModel) {
-                navController.popBackStack()
+            if (isSave) {
+                viewModel.requestInsertMovie(movieInfoModel)
+            } else {
+                viewModel.requestDeleteMovieUseCase(movieInfoModel)
             }
-        }
 
-        BottomSheetItem(
-            imageVector = Icons.Default.Delete,
-            title = stringResource(id = R.string.str_delete),
-            color = colorResource(id = R.color.red)
-        ) {
-            viewModel.requestDeleteMovieUseCase(movieInfoModel)
+            navController.popBackStack()
         }
 
         Spacer(modifier = Modifier.height(20.dp))
