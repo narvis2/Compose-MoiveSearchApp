@@ -3,7 +3,7 @@ package com.example.moviesearchapp.view.screen.favorite
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -31,7 +31,7 @@ fun FavoriteScreen(
     scaffoldState: ScaffoldState,
     onSaveCurrentMovie: (MovieInfoModel) -> Unit
 ) {
-    val favoriteList = viewModel.getLocalMovieList.collectAsState()
+    val favoriteList = viewModel.savedMovieList.collectAsState()
 
     val isEdit = viewModel.isEdit.collectAsState()
     val isAllSelect = viewModel.isAllSelected.collectAsState()
@@ -70,7 +70,9 @@ fun FavoriteScreen(
                         .fillMaxSize()
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 5.dp),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -80,6 +82,13 @@ fun FavoriteScreen(
                                 .padding(end = 5.dp)
                                 .clickable {
                                     if (isEdit.value && isAllSelect.value) {
+                                        val newList = favoriteList.value.map { model ->
+                                            model.isSelected = false
+                                            model
+                                        }
+
+                                        viewModel.setSavedMovieList(newList)
+
                                         viewModel.setIsAllSelected(false)
                                     }
 
@@ -104,6 +113,13 @@ fun FavoriteScreen(
                                         viewModel.setIsEdit(true)
                                     }
 
+                                    val newList = favoriteList.value.map { model ->
+                                        model.isSelected = !isAllSelect.value
+                                        model
+                                    }
+
+                                    viewModel.setSavedMovieList(newList)
+
                                     viewModel.setIsAllSelected(!isAllSelect.value)
                                 },
                             style = TextStyle(
@@ -121,9 +137,20 @@ fun FavoriteScreen(
                                 ErrorOrEmptyView(true)
                             }
                         } else {
-                            items(items = favoriteList.value) { movie ->
-                                FavoriteMovieItemView(movieInfoModel = movie, isEdit = isEdit.value) {
-                                    navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
+                            itemsIndexed(items = favoriteList.value) { index, movie ->
+                                FavoriteMovieItemView(
+                                    movieInfoModel = movie,
+                                    isEdit = isEdit.value,
+                                    isSelected = favoriteList.value[index].isSelected,
+                                    onRootClick = {
+                                        navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
+                                    }
+                                ) { isSelected ->
+                                    // 개별 선택
+                                    val mutableCurrentList = favoriteList.value.toMutableList()
+                                    mutableCurrentList[index] = favoriteList.value[index].copy(isSelected = !isSelected)
+
+                                    viewModel.setSavedMovieList(mutableCurrentList)
                                 }
                             }
                         }

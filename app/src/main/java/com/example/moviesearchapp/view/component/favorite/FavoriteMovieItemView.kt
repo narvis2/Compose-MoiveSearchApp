@@ -35,8 +35,11 @@ fun FavoriteMovieItemView(
     modifier: Modifier = Modifier,
     movieInfoModel: MovieInfoModel,
     isEdit: Boolean,
+    isSelected: Boolean,
     onRootClick: () -> Unit,
+    onSelectClick: (isSelected: Boolean) -> Unit
 ) {
+
     Row(modifier = modifier
         .clickable {
             onRootClick()
@@ -66,9 +69,17 @@ fun FavoriteMovieItemView(
             enter = slideInHorizontally(initialOffsetX = { -it }),
         ) {
             Image(
-                painter = painterResource(id = R.drawable.checkbox_01_off),
+                painter = painterResource(
+                    id = if (!isSelected)
+                        R.drawable.checkbox_01_off
+                    else
+                        R.drawable.checkbox_01_on
+                ),
                 contentDescription = "",
                 modifier = Modifier.size(90.dp)
+                    .clickable {
+                        onSelectClick(isSelected)
+                    },
             )
         }
 
