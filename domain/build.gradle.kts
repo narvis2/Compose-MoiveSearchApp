@@ -40,20 +40,14 @@ dependencies {
     // Hilt DI
     implementation(Dependencies.hilt.hilt)
     kapt(Dependencies.hilt.compiler)
-
     // Paging3 Pagination
     implementation(Dependencies.androidX.paging.runtime)
     testImplementation(Dependencies.androidX.paging.common)
-
     // Coroutine Thread
     implementation(Dependencies.coroutine.core)
     implementation(Dependencies.coroutine.android)
-
+    // Joda DateTime
     implementation(Dependencies.joda)
-
-    implementation(Dependencies.androidX.core)
-    implementation(Dependencies.androidX.appcompat)
-    implementation(Dependencies.androidX.material.material)
     testImplementation(Dependencies.androidX.test.junit)
     androidTestImplementation(Dependencies.androidX.test.ext_junit)
     androidTestImplementation(Dependencies.androidX.test.espresso)

@@ -37,10 +37,6 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.androidX.core)
-    implementation(Dependencies.androidX.appcompat)
-    implementation(Dependencies.androidX.material.material)
-
     // Hilt
     implementation(Dependencies.hilt.hilt)
     kapt(Dependencies.hilt.compiler)
@@ -57,12 +53,10 @@ dependencies {
     // Paging3
     implementation(Dependencies.androidX.paging.runtime)
     testImplementation(Dependencies.androidX.paging.common)
-
     // Room
     implementation(Dependencies.androidX.room.runtime)
     implementation(Dependencies.androidX.room.ktx)
     kapt(Dependencies.androidX.room.compiler)
-
     // Joda
     implementation(Dependencies.joda)
 
