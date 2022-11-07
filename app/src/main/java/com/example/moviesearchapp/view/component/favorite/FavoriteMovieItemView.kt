@@ -3,7 +3,6 @@ package com.example.moviesearchapp.view.component.favorite
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -25,6 +24,7 @@ import coil.request.ImageRequest
 import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.utils.htmlToString
+import com.example.moviesearchapp.view.utils.onSingleClick
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
 import com.gowtham.ratingbar.RatingBarStyle
@@ -41,7 +41,7 @@ fun FavoriteMovieItemView(
 ) {
 
     Row(modifier = modifier
-        .clickable {
+        .onSingleClick {
             onRootClick()
         }
         .padding(10.dp)
@@ -77,7 +77,7 @@ fun FavoriteMovieItemView(
                 ),
                 contentDescription = "",
                 modifier = Modifier.size(90.dp)
-                    .clickable {
+                    .onSingleClick {
                         onSelectClick(isSelected)
                     },
             )
