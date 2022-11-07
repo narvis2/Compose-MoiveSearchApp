@@ -31,6 +31,52 @@ import com.gowtham.ratingbar.RatingBarStyle
 import com.gowtham.ratingbar.StepSize
 
 @Composable
+fun FavoriteEditModeView(
+    isEdit: Boolean,
+    isSelectedAll: Boolean,
+    onEditModeClick: () -> Unit,
+    onSelectAllClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 5.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(id = R.string.str_edit),
+            modifier = Modifier
+                .padding(end = 5.dp)
+                .onSingleClick {
+                    onEditModeClick()
+                },
+            style = TextStyle(
+                fontWeight = if (isEdit) FontWeight.Bold else FontWeight.Medium,
+                color = if (!isEdit) Color.LightGray else Color.Black
+            ),
+        )
+
+        Divider(modifier = Modifier
+            .height(15.dp)
+            .width(1.dp))
+
+        Text(
+            text = stringResource(id = R.string.str_all_select),
+            modifier = Modifier
+                .padding(start = 5.dp)
+                .onSingleClick {
+                    onSelectAllClick()
+                },
+            style = TextStyle(
+                fontWeight = if (isSelectedAll) FontWeight.Bold else FontWeight.Medium,
+                color = if (!isSelectedAll) Color.LightGray else Color.Black
+            )
+        )
+    }
+}
+
+@Composable
 fun FavoriteMovieItemView(
     modifier: Modifier = Modifier,
     movieInfoModel: MovieInfoModel,
