@@ -2,8 +2,8 @@ plugins {
     id (BuildPlugins.ANDROID_APPLICATION) version Versions.AGP apply false
     id (BuildPlugins.ANDROID_LIBRARY) version Versions.AGP apply false
     id (BuildPlugins.KOTLIN_ANDROID) version Versions.KOTLIN apply false
-    id (BuildPlugins.HILT_PLUGIN) version Versions.HILT apply false
-    id(BuildPlugins.BUILD_SRC_UPDATE_VERSION) version Versions.BEN_MANES
+    id (BuildPlugins.DAGGER_HILT) version Versions.HILT apply false
+    id (BuildPlugins.BUILD_SRC_UPDATE_VERSION) version Versions.BEN_MANES
 }
 
 tasks.register<Delete>("clean") {
@@ -35,6 +35,6 @@ tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("
         // optional parameters
         checkForGradleUpdate = true
         outputFormatter = "json"
-        outputDir = "build/dependencyUpdates" // build > dependencyUpdates 하위에 json 파일 생김
-        reportfileName = "report"
+        outputDir = "build/dependencyUpdates"
+        reportfileName = "report" // build > dependencyUpdates 하위에 report.json 파일 생성됨
     }

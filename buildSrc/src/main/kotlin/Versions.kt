@@ -10,7 +10,6 @@ object Versions {
     const val PAGING = "3.1.1"
     const val LIFECYCLE = "2.5.1"
     const val CORE_KTX = "1.7.0"
-    const val APP_COMPAT = "1.5.1"
     const val COMPOSE_PAGING = "1.0.0-alpha17"
     const val GLIDE = "4.13.2"
     const val COROUTINE = "1.6.1"
