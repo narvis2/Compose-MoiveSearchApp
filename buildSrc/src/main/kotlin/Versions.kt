@@ -1,5 +1,7 @@
 object Versions {
+    const val AGP = "7.3.0"
     const val KOTLIN = "1.6.10"
+    const val BEN_MANES = "0.43.0"
     const val HILT = "2.41"
     const val COMPOSE_HILT_NAVIGATION = "1.0.0"
     const val ROOM = "2.4.3"
