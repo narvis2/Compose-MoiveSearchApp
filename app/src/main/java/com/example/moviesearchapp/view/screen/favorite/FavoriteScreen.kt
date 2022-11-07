@@ -1,5 +1,6 @@
 package com.example.moviesearchapp.view.screen.favorite
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,13 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
-import com.example.moviesearchapp.view.component.home.MovieInfoItemView
+import com.example.moviesearchapp.view.component.favorite.FavoriteMovieItemView
 import com.example.moviesearchapp.view.navigation.NavigationType
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 
@@ -29,6 +32,9 @@ fun FavoriteScreen(
     onSaveCurrentMovie: (MovieInfoModel) -> Unit
 ) {
     val favoriteList = viewModel.getLocalMovieList.collectAsState()
+
+    val isEdit = viewModel.isEdit.collectAsState()
+    val isAllSelect = viewModel.isAllSelected.collectAsState()
 
     Scaffold(
         topBar = {
@@ -58,28 +64,71 @@ fun FavoriteScreen(
         scaffoldState = scaffoldState,
     ) {
         Box(modifier = Modifier.padding(it)) {
-            Surface(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxSize()
-            ) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    if (favoriteList.value.isEmpty()) {
-                        item {
-                            ErrorOrEmptyView(true)
-                        }
-                    } else {
-                        items(items = favoriteList.value) { movie ->
-                            MovieInfoItemView(movieInfoModel = movie, onRootClick = {
-                                navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
-                            }) {
-                                onSaveCurrentMovie(movie)
-                                navController.navigate(NavigationType.MORE_BOTTOM_SHEET.name + "?isSave=${false}")
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxSize()
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.str_edit),
+                            modifier = Modifier
+                                .padding(end = 5.dp)
+                                .clickable {
+                                    if (isEdit.value && isAllSelect.value) {
+                                        viewModel.setIsAllSelected(false)
+                                    }
+
+                                    viewModel.setIsEdit(!isEdit.value)
+                                },
+                            style = TextStyle(
+                                fontWeight = if (isEdit.value) FontWeight.Bold else FontWeight.Medium,
+                                color = if (!isEdit.value) Color.LightGray else Color.Black
+                            ),
+                        )
+
+                        Divider(modifier = Modifier
+                            .height(15.dp)
+                            .width(1.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.str_all_select),
+                            modifier = Modifier
+                                .padding(start = 5.dp)
+                                .clickable {
+                                    if (!isEdit.value) {
+                                        viewModel.setIsEdit(true)
+                                    }
+
+                                    viewModel.setIsAllSelected(!isAllSelect.value)
+                                },
+                            style = TextStyle(
+                                fontWeight = if (isAllSelect.value) FontWeight.Bold else FontWeight.Medium,
+                                color = if (!isAllSelect.value) Color.LightGray else Color.Black
+                            )
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        if (favoriteList.value.isEmpty()) {
+                            item {
+                                ErrorOrEmptyView(true)
+                            }
+                        } else {
+                            items(items = favoriteList.value) { movie ->
+                                FavoriteMovieItemView(movieInfoModel = movie, isEdit = isEdit.value) {
+                                    navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
+                                }
                             }
                         }
                     }
                 }
-            }
         }
     }
 }

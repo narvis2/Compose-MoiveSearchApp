@@ -79,18 +79,17 @@ fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostControll
             }
 
             bottomSheet(
-                route = NavigationType.MORE_BOTTOM_SHEET.name + "?isSave={isSave}",
+                route = NavigationType.MORE_BOTTOM_SHEET.name,
                 arguments = listOf(
                     navArgument("isSave") {
                         defaultValue = true
                     }
                 )
-            ) { backStackEntity ->
+            ) {
                 currentMovieInfoModel.value?.let { currentModel ->
                     MovieMoreBottomSheetDialog(
                         navController = navController,
                         movieInfoModel = currentModel,
-                        isSave = backStackEntity.arguments?.getBoolean("isSave") ?: true
                     )
                 }
             }
