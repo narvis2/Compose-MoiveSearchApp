@@ -35,7 +35,9 @@ fun FavoriteMovieItemView(
     modifier: Modifier = Modifier,
     movieInfoModel: MovieInfoModel,
     isEdit: Boolean,
+    isAllSelected: Boolean,
     onRootClick: () -> Unit,
+    onEditClick: () -> Unit
 ) {
     Row(modifier = modifier
         .clickable {
@@ -66,9 +68,9 @@ fun FavoriteMovieItemView(
             enter = slideInHorizontally(initialOffsetX = { -it }),
         ) {
             Image(
-                painter = painterResource(id = R.drawable.checkbox_01_off),
+                painter = painterResource(id = if (!isAllSelected) R.drawable.checkbox_01_off else R.drawable.checkbox_01_on),
                 contentDescription = "",
-                modifier = Modifier.size(90.dp)
+                modifier = Modifier.size(90.dp).clickable { onEditClick() },
             )
         }
 

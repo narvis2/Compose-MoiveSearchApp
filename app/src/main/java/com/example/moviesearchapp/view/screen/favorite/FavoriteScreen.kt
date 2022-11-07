@@ -122,8 +122,15 @@ fun FavoriteScreen(
                             }
                         } else {
                             items(items = favoriteList.value) { movie ->
-                                FavoriteMovieItemView(movieInfoModel = movie, isEdit = isEdit.value) {
-                                    navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
+                                FavoriteMovieItemView(
+                                    movieInfoModel = movie,
+                                    isEdit = isEdit.value,
+                                    isAllSelected = isAllSelect.value,
+                                    onRootClick = {
+                                        navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
+                                    }
+                                ) {
+
                                 }
                             }
                         }
