@@ -73,9 +73,7 @@ fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostControll
             }
             
             composable(route = NavigationType.FAVORITE_SCREEN.name) {
-                FavoriteScreen(navController = navController, scaffoldState = scaffoldState) { model ->
-                    mainViewModel.setMovieInfoModel(model)
-                }
+                FavoriteScreen(navController = navController, scaffoldState = scaffoldState)
             }
 
             bottomSheet(
