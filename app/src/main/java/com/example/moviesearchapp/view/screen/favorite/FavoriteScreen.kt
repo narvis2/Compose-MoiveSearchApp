@@ -1,6 +1,5 @@
 package com.example.moviesearchapp.view.screen.favorite
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -22,6 +21,7 @@ import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.component.favorite.FavoriteMovieItemView
 import com.example.moviesearchapp.view.navigation.NavigationType
+import com.example.moviesearchapp.view.utils.onSingleClick
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 
 @Composable
@@ -80,7 +80,7 @@ fun FavoriteScreen(
                             text = stringResource(id = R.string.str_edit),
                             modifier = Modifier
                                 .padding(end = 5.dp)
-                                .clickable {
+                                .onSingleClick {
                                     if (isEdit.value && isAllSelect.value) {
                                         val newList = favoriteList.value.map { model ->
                                             model.isSelected = false
@@ -108,7 +108,7 @@ fun FavoriteScreen(
                             text = stringResource(id = R.string.str_all_select),
                             modifier = Modifier
                                 .padding(start = 5.dp)
-                                .clickable {
+                                .onSingleClick {
                                     if (!isEdit.value) {
                                         viewModel.setIsEdit(true)
                                     }
@@ -143,6 +143,7 @@ fun FavoriteScreen(
                                     isEdit = isEdit.value,
                                     isSelected = favoriteList.value[index].isSelected,
                                     onRootClick = {
+                                        if (isEdit.value) return@FavoriteMovieItemView
                                         navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
                                     }
                                 ) { isSelected ->

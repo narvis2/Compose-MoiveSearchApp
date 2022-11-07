@@ -1,7 +1,6 @@
 package com.example.moviesearchapp.view.widgets
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -17,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.moviesearchapp.view.utils.onSingleClick
 
 @Composable
 fun BottomSheetHeader(title: String, onBackPress: () -> Unit) {
@@ -53,7 +53,7 @@ fun BottomSheetItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onItemClick() }
+            .onSingleClick { onItemClick() }
             .height(55.dp)
             .background(color = Color.White)
             .padding(start = 15.dp),

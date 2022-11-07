@@ -2,7 +2,6 @@ package com.example.moviesearchapp.view.component.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,6 +29,7 @@ import coil.request.ImageRequest
 import com.example.domain.model.MovieInfoModel
 import com.example.moviesearchapp.R
 import com.example.moviesearchapp.view.utils.htmlToString
+import com.example.moviesearchapp.view.utils.onSingleClick
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
 import com.gowtham.ratingbar.RatingBarStyle
@@ -114,7 +114,7 @@ fun MovieInfoItemView(
 ) {
     Row(
         modifier = modifier
-            .clickable {
+            .onSingleClick {
                 onRootClick()
             }
             .padding(10.dp)
@@ -183,7 +183,7 @@ fun MovieInfoItemView(
             Image(
                 modifier = modifier
                     .align(Alignment.TopEnd)
-                    .clickable {
+                    .onSingleClick {
                         onActionMoreClick()
                     }
                     .padding(start = 16.dp, bottom = 16.dp, top = 5.dp, end = 5.dp),
