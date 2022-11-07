@@ -31,7 +31,7 @@ fun FavoriteScreen(
     scaffoldState: ScaffoldState,
     onSaveCurrentMovie: (MovieInfoModel) -> Unit
 ) {
-    val favoriteList = viewModel.getLocalMovieList.collectAsState()
+    val favoriteList = viewModel.savedMovieList.collectAsState()
 
     val isEdit = viewModel.isEdit.collectAsState()
     val isAllSelect = viewModel.isAllSelected.collectAsState()
@@ -82,6 +82,13 @@ fun FavoriteScreen(
                                 .padding(end = 5.dp)
                                 .clickable {
                                     if (isEdit.value && isAllSelect.value) {
+                                        val newList = favoriteList.value.map { model ->
+                                            model.isSelected = false
+                                            model
+                                        }
+
+                                        viewModel.setSavedMovieList(newList)
+
                                         viewModel.setIsAllSelected(false)
                                     }
 
@@ -106,6 +113,13 @@ fun FavoriteScreen(
                                         viewModel.setIsEdit(true)
                                     }
 
+                                    val newList = favoriteList.value.map { model ->
+                                        model.isSelected = !isAllSelect.value
+                                        model
+                                    }
+
+                                    viewModel.setSavedMovieList(newList)
+
                                     viewModel.setIsAllSelected(!isAllSelect.value)
                                 },
                             style = TextStyle(
@@ -127,12 +141,17 @@ fun FavoriteScreen(
                                 FavoriteMovieItemView(
                                     movieInfoModel = movie,
                                     isEdit = isEdit.value,
-                                    index = index,
-                                    favoriteList = favoriteList.value,
+                                    isSelected = favoriteList.value[index].isSelected,
                                     onRootClick = {
                                         navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
                                     }
-                                )
+                                ) { isSelected ->
+                                    // 개별 선택
+                                    val mutableCurrentList = favoriteList.value.toMutableList()
+                                    mutableCurrentList[index] = favoriteList.value[index].copy(isSelected = !isSelected)
+
+                                    viewModel.setSavedMovieList(mutableCurrentList)
+                                }
                             }
                         }
                     }

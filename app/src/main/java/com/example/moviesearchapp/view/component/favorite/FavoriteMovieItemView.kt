@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,11 +35,10 @@ fun FavoriteMovieItemView(
     modifier: Modifier = Modifier,
     movieInfoModel: MovieInfoModel,
     isEdit: Boolean,
-    index: Int,
-    favoriteList: List<MovieInfoModel>,
+    isSelected: Boolean,
     onRootClick: () -> Unit,
+    onSelectClick: (isSelected: Boolean) -> Unit
 ) {
-    val isSelected = rememberSaveable { mutableStateOf(favoriteList[index].isSelected) }
 
     Row(modifier = modifier
         .clickable {
@@ -73,7 +70,7 @@ fun FavoriteMovieItemView(
         ) {
             Image(
                 painter = painterResource(
-                    id = if (!isSelected.value)
+                    id = if (!isSelected)
                         R.drawable.checkbox_01_off
                     else
                         R.drawable.checkbox_01_on
@@ -81,7 +78,7 @@ fun FavoriteMovieItemView(
                 contentDescription = "",
                 modifier = Modifier.size(90.dp)
                     .clickable {
-                        isSelected.value = !isSelected.value
+                        onSelectClick(isSelected)
                     },
             )
         }
