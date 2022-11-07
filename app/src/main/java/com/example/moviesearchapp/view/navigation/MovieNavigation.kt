@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.plusAssign
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
@@ -72,12 +73,25 @@ fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostControll
             }
             
             composable(route = NavigationType.FAVORITE_SCREEN.name) {
-                FavoriteScreen(navController = navController, scaffoldState = scaffoldState)
+                FavoriteScreen(navController = navController, scaffoldState = scaffoldState) { model ->
+                    mainViewModel.setMovieInfoModel(model)
+                }
             }
 
-            bottomSheet(route = NavigationType.MORE_BOTTOM_SHEET.name) {
+            bottomSheet(
+                route = NavigationType.MORE_BOTTOM_SHEET.name + "?isSave={isSave}",
+                arguments = listOf(
+                    navArgument("isSave") {
+                        defaultValue = true
+                    }
+                )
+            ) { backStackEntity ->
                 currentMovieInfoModel.value?.let { currentModel ->
-                    MovieMoreBottomSheetDialog(navController = navController, movieInfoModel = currentModel)
+                    MovieMoreBottomSheetDialog(
+                        navController = navController,
+                        movieInfoModel = currentModel,
+                        isSave = backStackEntity.arguments?.getBoolean("isSave") ?: true
+                    )
                 }
             }
         }

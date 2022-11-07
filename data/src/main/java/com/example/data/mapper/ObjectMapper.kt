@@ -25,6 +25,7 @@ object ObjectMapper {
     }
 
     fun MovieEntity.toMovieInfoModel(): MovieInfoModel = MovieInfoModel(
+        id = this.id,
         title = this.title,
         link = this.link,
         image = this.image,
@@ -38,6 +39,7 @@ object ObjectMapper {
     )
 
     fun MovieInfoModel.toMovieEntity(): MovieEntity = MovieEntity(
+        id = this.id,
         title = this.title,
         link = this.link,
         image = this.image,

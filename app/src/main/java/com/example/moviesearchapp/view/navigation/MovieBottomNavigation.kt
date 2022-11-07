@@ -46,10 +46,6 @@ fun MovieBottomNavigation(navController: NavHostController) {
             bottomBarState.value = true
         }
 
-        NavigationType.MORE_BOTTOM_SHEET.name -> {
-            bottomBarState.value = true
-        }
-
         else -> {
             bottomBarState.value = false
         }
