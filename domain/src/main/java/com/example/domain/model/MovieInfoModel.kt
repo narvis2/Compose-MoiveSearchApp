@@ -13,7 +13,8 @@ data class MovieInfoModel(
     val actor: String,
     val userRating: Float,
     val insertDateTime: DateTime = DateTime.now(),
-    val updateTime: DateTime? = null
+    val updateTime: DateTime? = null,
+    var isSelected: Boolean = false
 ) {
     val rating = userRating / 2
 }

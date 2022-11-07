@@ -3,7 +3,7 @@ package com.example.moviesearchapp.view.screen.favorite
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -70,7 +70,9 @@ fun FavoriteScreen(
                         .fillMaxSize()
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 5.dp),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -121,17 +123,16 @@ fun FavoriteScreen(
                                 ErrorOrEmptyView(true)
                             }
                         } else {
-                            items(items = favoriteList.value) { movie ->
+                            itemsIndexed(items = favoriteList.value) { index, movie ->
                                 FavoriteMovieItemView(
                                     movieInfoModel = movie,
                                     isEdit = isEdit.value,
-                                    isAllSelected = isAllSelect.value,
+                                    index = index,
+                                    favoriteList = favoriteList.value,
                                     onRootClick = {
                                         navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
                                     }
-                                ) {
-
-                                }
+                                )
                             }
                         }
                     }
