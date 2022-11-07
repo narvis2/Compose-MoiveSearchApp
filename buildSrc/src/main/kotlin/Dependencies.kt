@@ -1,9 +1,12 @@
 object BuildPlugins {
-    val HILT_PLUGIN by lazy { "com.google.dagger.hilt.android" }
+    val DAGGER_HILT by lazy { "com.google.dagger.hilt.android" }
+    val HILT_PLUGIN by lazy { "dagger.hilt.android.plugin" }
     val ANDROID_APPLICATION by lazy { "com.android.application" }
     val ANDROID_LIBRARY by lazy { "com.android.library" }
     val KOTLIN_ANDROID by lazy { "org.jetbrains.kotlin.android" }
     val BUILD_SRC_UPDATE_VERSION by lazy { "com.github.ben-manes.versions" }
+    val KOTLIN_PARCELIZE by lazy { "kotlin-parcelize" }
+    val KOTLIN_KAPT by lazy { "kotlin-kapt" }
 }
 
 object Dependencies {
@@ -27,7 +30,6 @@ object Dependencies {
     object AndroidX {
         val core by lazy { "androidx.core:core-ktx:${Versions.CORE_KTX}" }
         val compose_activity by lazy { "androidx.activity:activity-compose:${Versions.COMPOSE_ACTIVITY}" }
-        val appcompat by lazy { "androidx.appcompat:appcompat:${Versions.APP_COMPAT}" }
 
         val compose_ui = ComposeUi
         object ComposeUi {

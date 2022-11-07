@@ -1,9 +1,9 @@
 plugins {
-    id ("com.android.application")
-    id ("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
-    id ("kotlin-parcelize")
+    id (BuildPlugins.ANDROID_APPLICATION)
+    id (BuildPlugins.KOTLIN_ANDROID)
+    id (BuildPlugins.KOTLIN_KAPT)
+    id (BuildPlugins.HILT_PLUGIN)
+    id (BuildPlugins.KOTLIN_PARCELIZE)
 }
 
 android {
