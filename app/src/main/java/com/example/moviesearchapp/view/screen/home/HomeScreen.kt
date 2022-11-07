@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -67,11 +68,27 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.home_title))
-                },
+                modifier = Modifier.fillMaxWidth(),
                 backgroundColor = Color.White
-            )
+            ) {
+                Box() {
+                    Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+
+                        ProvideTextStyle(value = MaterialTheme.typography.h6) {
+                            CompositionLocalProvider(
+                                LocalContentAlpha provides ContentAlpha.high,
+                            ){
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    text = stringResource(id = R.string.home_title)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         },
         scaffoldState = scaffoldState,
         floatingActionButton = {
