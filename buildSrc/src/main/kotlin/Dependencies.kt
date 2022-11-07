@@ -1,5 +1,6 @@
 object BuildPlugins {
     val DAGGER_HILT by lazy { "com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}" }
+    val KOTLIN by lazy { "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}" }
 }
 
 object Dependencies {

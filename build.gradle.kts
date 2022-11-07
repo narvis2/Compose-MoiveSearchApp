@@ -1,7 +1,7 @@
 buildscript {
     dependencies {
         classpath (BuildPlugins.DAGGER_HILT)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
+        classpath (BuildPlugins.KOTLIN)
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
