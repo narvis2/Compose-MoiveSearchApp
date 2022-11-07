@@ -1,11 +1,40 @@
-buildscript {
-    dependencies {
-        classpath (BuildPlugins.DAGGER_HILT)
-        classpath (BuildPlugins.KOTLIN)
-    }
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id ("com.android.application") version "7.3.0" apply false
-    id ("com.android.library") version "7.3.0" apply false
-    id ("org.jetbrains.kotlin.android") version "1.6.10" apply false
+    id (BuildPlugins.ANDROID_APPLICATION) version Versions.AGP apply false
+    id (BuildPlugins.ANDROID_LIBRARY) version Versions.AGP apply false
+    id (BuildPlugins.KOTLIN_ANDROID) version Versions.KOTLIN apply false
+    id (BuildPlugins.HILT_PLUGIN) version Versions.HILT apply false
+    id(BuildPlugins.BUILD_SRC_UPDATE_VERSION) version Versions.BEN_MANES
 }
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.buildDir)
+}
+
+// 네트워크에서 아티팩트 정보를 받아온 뒤 안정버전인지 여부를 판정하는 함수를 추가
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
+/**
+ * 디펜던시 버전을 체크하는 태스크를 정의
+ * ✅ 실행
+ * 1️⃣ mac 기준 control 키 2번 클릭
+ * 2️⃣ ./gradlew dependencyUpdate 입력 및 엔터
+ * 3️⃣ build > dependencyUpdates 하위에 json 파일 생김
+ */
+tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("dependencyUpdates")
+    .configure {
+        // rejectVersionInf -> 제한 사항, isStable 에 해당되지 않는 모든 버전을 거부
+        rejectVersionIf {
+            isNonStable(candidate.version)
+        }
+
+        // optional parameters
+        checkForGradleUpdate = true
+        outputFormatter = "json"
+        outputDir = "build/dependencyUpdates" // build > dependencyUpdates 하위에 json 파일 생김
+        reportfileName = "report"
+    }
