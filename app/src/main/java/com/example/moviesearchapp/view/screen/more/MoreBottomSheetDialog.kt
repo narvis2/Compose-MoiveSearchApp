@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +23,6 @@ fun MovieMoreBottomSheetDialog(
     viewModel: MoreBottomSheetDialogViewModel = hiltViewModel(),
     navController: NavController,
     movieInfoModel: MovieInfoModel,
-    isSave: Boolean
 ) {
     Column() {
         BottomSheetHeader(title = movieInfoModel.title.htmlToString()) {
@@ -32,15 +30,11 @@ fun MovieMoreBottomSheetDialog(
         }
 
         BottomSheetItem(
-            imageVector = if (isSave) Icons.Default.Save else Icons.Default.Delete,
-            title = stringResource(id = if (isSave) R.string.str_save else R.string.str_delete),
-            color = colorResource(id = if (isSave) R.color.orange else R.color.red)
+            imageVector = Icons.Default.Save,
+            title = stringResource(R.string.str_save),
+            color = colorResource(R.color.orange)
         ) {
-            if (isSave) {
-                viewModel.requestInsertMovie(movieInfoModel)
-            } else {
-                viewModel.requestDeleteMovieUseCase(movieInfoModel)
-            }
+            viewModel.requestInsertMovie(movieInfoModel)
 
             navController.popBackStack()
         }
