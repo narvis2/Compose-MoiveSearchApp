@@ -114,19 +114,25 @@ fun FavoriteMovieItemView(
             visible = isEdit,
             enter = slideInHorizontally(initialOffsetX = { -it }),
         ) {
-            Image(
-                painter = painterResource(
-                    id = if (!isSelected)
-                        R.drawable.checkbox_01_off
-                    else
-                        R.drawable.checkbox_01_on
-                ),
-                contentDescription = "",
-                modifier = Modifier.size(90.dp)
+            Box(
+                modifier = Modifier
+                    .size(90.dp)
                     .onSingleClick {
                         onSelectClick(isSelected)
                     },
-            )
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = if (!isSelected)
+                            R.drawable.checkbox_01_off
+                        else
+                            R.drawable.checkbox_01_on
+                    ),
+                    contentDescription = "",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
         }
 
         Box(
