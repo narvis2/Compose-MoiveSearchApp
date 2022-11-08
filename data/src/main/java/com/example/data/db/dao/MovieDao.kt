@@ -25,4 +25,7 @@ interface MovieDao {
 
     @Delete
     suspend fun deleteMovie(movieEntity: MovieEntity): Int
+
+    @Query("DELETE FROM `movie` WHERE `id` in (:ids)")
+    suspend fun deleteMovieListById(ids: List<Long>)
 }

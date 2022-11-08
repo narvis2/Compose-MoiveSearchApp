@@ -135,7 +135,13 @@ fun FavoriteScreen(
                     viewModel.onDeleteAllMovie()
                 },
                 onDeleteMovie = {
+                    val mapperList = favoriteList.value.filter { model ->
+                        model.isSelected
+                    }.map { model ->
+                        model.id
+                    }
 
+                    viewModel.onDeleteMovieListById(mapperList)
                 }
             )
         }

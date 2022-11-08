@@ -17,4 +17,6 @@ interface NaverRepository {
     suspend fun requestLocalDeleteMovieAll()
 
     suspend fun requestLocalDeleteMovie(movieInfoModel: MovieInfoModel): Int
+
+    suspend fun requestDeleteMovieListById(ids: List<Long>)
 }
