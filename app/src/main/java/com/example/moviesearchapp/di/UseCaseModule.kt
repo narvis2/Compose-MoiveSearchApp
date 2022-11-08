@@ -47,4 +47,10 @@ class UseCaseModule {
     fun provideRequestLocalDeleteMovieUseCase(
         naverRepository: NaverRepository
     ): RequestLocalDeleteMovieUseCase = RequestLocalDeleteMovieUseCase(naverRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideRequestDeleteMovieListUseCase(
+        naverRepository: NaverRepository
+    ): RequestDeleteMovieListUseCase = RequestDeleteMovieListUseCase(naverRepository)
 }

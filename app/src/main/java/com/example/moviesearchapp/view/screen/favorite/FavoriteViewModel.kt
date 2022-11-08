@@ -3,6 +3,7 @@ package com.example.moviesearchapp.view.screen.favorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.MovieInfoModel
+import com.example.domain.usecase.RequestDeleteMovieListUseCase
 import com.example.domain.usecase.RequestLocalDeleteMovieAllUseCase
 import com.example.domain.usecase.RequestLocalMovieListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     private val requestLocalMovieListUseCase: RequestLocalMovieListUseCase,
-    private val requestLocalDeleteMovieAllUseCase: RequestLocalDeleteMovieAllUseCase
+    private val requestLocalDeleteMovieAllUseCase: RequestLocalDeleteMovieAllUseCase,
+    private val requestDeleteMovieListUseCase: RequestDeleteMovieListUseCase
 ) : ViewModel() {
 
     private val _savedMovieList = MutableStateFlow<List<MovieInfoModel>>(emptyList())
@@ -56,5 +58,9 @@ class FavoriteViewModel @Inject constructor(
 
     fun onDeleteAllMovie() = viewModelScope.launch {
         requestLocalDeleteMovieAllUseCase()
+    }
+
+    fun onDeleteMovieListById(ids: List<Long>) = viewModelScope.launch {
+        requestDeleteMovieListUseCase(ids)
     }
 }

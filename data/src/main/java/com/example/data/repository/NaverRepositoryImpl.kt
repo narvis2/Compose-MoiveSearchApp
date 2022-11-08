@@ -53,4 +53,8 @@ class NaverRepositoryImpl @Inject constructor(
     override suspend fun requestLocalDeleteMovie(movieInfoModel: MovieInfoModel): Int {
         return localDataSource.deleteMovie(movieInfoModel.toMovieEntity())
     }
+
+    override suspend fun requestDeleteMovieListById(ids: List<Long>) {
+        return localDataSource.deleteMovieListById(ids)
+    }
 }
