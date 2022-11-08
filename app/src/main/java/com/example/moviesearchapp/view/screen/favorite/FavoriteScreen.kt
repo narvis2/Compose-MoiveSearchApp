@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,7 @@ import com.example.moviesearchapp.view.component.favorite.FavoriteEditModeView
 import com.example.moviesearchapp.view.component.favorite.FavoriteMovieItemView
 import com.example.moviesearchapp.view.navigation.NavigationType
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
+import kotlinx.coroutines.launch
 
 @Composable
 fun FavoriteScreen(
@@ -32,6 +34,8 @@ fun FavoriteScreen(
 
     val isEdit = viewModel.isEdit.collectAsState()
     val isAllSelect = viewModel.isAllSelected.collectAsState()
+
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -65,37 +69,39 @@ fun FavoriteScreen(
                     .padding(10.dp)
                     .fillMaxSize()
             ) {
-                FavoriteEditModeView(isEdit = isEdit.value,
-                    isSelectedAll = isAllSelect.value,
-                    onEditModeClick = {
-                        if (isEdit.value && isAllSelect.value) {
+                if (favoriteList.value.isNotEmpty()) {
+                    FavoriteEditModeView(isEdit = isEdit.value,
+                        isSelectedAll = isAllSelect.value,
+                        onEditModeClick = {
+                            if (isEdit.value && isAllSelect.value) {
+                                val newList = favoriteList.value.map { model ->
+                                    model.isSelected = false
+                                    model
+                                }
+
+                                viewModel.setSavedMovieList(newList)
+                                viewModel.setIsAllSelected(false)
+                            }
+
+                            viewModel.setIsEdit(!isEdit.value)
+                        },
+                        onSelectAllClick = {
+                            if (!isEdit.value) {
+                                viewModel.setIsEdit(true)
+                            }
+
+                            // 전체 선택 -> 모든 List 의 isSelected 를 바꿔줌
                             val newList = favoriteList.value.map { model ->
-                                model.isSelected = false
+                                model.isSelected = !isAllSelect.value
                                 model
                             }
 
                             viewModel.setSavedMovieList(newList)
-                            viewModel.setIsAllSelected(false)
-                        }
+                            viewModel.setIsAllSelected(!isAllSelect.value)
+                        })
 
-                        viewModel.setIsEdit(!isEdit.value)
-                    },
-                    onSelectAllClick = {
-                        if (!isEdit.value) {
-                            viewModel.setIsEdit(true)
-                        }
-
-                        // 전체 선택 -> 모든 List 의 isSelected 를 바꿔줌
-                        val newList = favoriteList.value.map { model ->
-                            model.isSelected = !isAllSelect.value
-                            model
-                        }
-
-                        viewModel.setSavedMovieList(newList)
-                        viewModel.setIsAllSelected(!isAllSelect.value)
-                    })
-
-                Spacer(modifier = Modifier.height(15.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
+                }
 
                 LazyColumn(
                     modifier = Modifier
@@ -127,23 +133,33 @@ fun FavoriteScreen(
                 }
             }
 
-            FavoriteEditBottomView(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                isEdit = isEdit.value,
-                isSelectedItem = favoriteList.value.filter { model -> model.isSelected }.size,
-                onDeleteAllMovie = {
-                    viewModel.onDeleteAllMovie()
-                },
-                onDeleteMovie = {
-                    val mapperList = favoriteList.value.filter { model ->
-                        model.isSelected
-                    }.map { model ->
-                        model.id
-                    }
+            if (favoriteList.value.isNotEmpty()) {
+                FavoriteEditBottomView(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    isEdit = isEdit.value,
+                    isSelectedItem = favoriteList.value.filter { model -> model.isSelected }.size,
+                    onDeleteAllMovie = {
+                        viewModel.onDeleteAllMovie()
 
-                    viewModel.onDeleteMovieListById(mapperList)
-                }
-            )
+                        coroutineScope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar("전체 삭제를 완료하였습니다.")
+                        }
+                    },
+                    onDeleteMovie = {
+                        val mapperList = favoriteList.value.filter { model ->
+                            model.isSelected
+                        }.map { model ->
+                            model.id
+                        }
+
+                        viewModel.onDeleteMovieListById(mapperList)
+
+                        coroutineScope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar("${mapperList.size}개의 영화를 삭제하였습니다.")
+                        }
+                    }
+                )
+            }
         }
     }
 }

@@ -58,6 +58,9 @@ class FavoriteViewModel @Inject constructor(
 
     fun onDeleteAllMovie() = viewModelScope.launch {
         requestLocalDeleteMovieAllUseCase()
+        if (isEdit.value) {
+            setIsEdit(false)
+        }
     }
 
     fun onDeleteMovieListById(ids: List<Long>) = viewModelScope.launch {
