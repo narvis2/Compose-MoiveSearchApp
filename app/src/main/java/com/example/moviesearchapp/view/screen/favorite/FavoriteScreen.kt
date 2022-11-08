@@ -3,11 +3,9 @@ package com.example.moviesearchapp.view.screen.favorite
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +20,7 @@ import com.example.moviesearchapp.view.component.favorite.FavoriteEditModeView
 import com.example.moviesearchapp.view.component.favorite.FavoriteMovieItemView
 import com.example.moviesearchapp.view.navigation.NavigationType
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
+import com.example.moviesearchapp.view.widgets.ScrollTopButton
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,6 +35,9 @@ fun FavoriteScreen(
     val isAllSelect = viewModel.isAllSelected.collectAsState()
 
     val coroutineScope = rememberCoroutineScope()
+
+    val scrollState = rememberLazyListState()
+    val scrollCoroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -62,6 +64,15 @@ fun FavoriteScreen(
             }
         },
         scaffoldState = scaffoldState,
+        floatingActionButton = {
+            if (remember { derivedStateOf { scrollState.firstVisibleItemIndex } }.value >= 1) {
+                ScrollTopButton {
+                    scrollCoroutineScope.launch {
+                        scrollState.animateScrollToItem(index = 0)
+                    }
+                }
+            }
+        }
     ) {
         Box(modifier = Modifier.padding(it)) {
             Column(
@@ -106,7 +117,8 @@ fun FavoriteScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight()
+                        .wrapContentHeight(),
+                    state = scrollState
                 ) {
                     if (favoriteList.value.isEmpty()) {
                         item {
