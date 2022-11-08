@@ -184,6 +184,7 @@ fun FavoriteMovieItemView(
 fun FavoriteEditBottomView(
     modifier: Modifier = Modifier,
     isEdit: Boolean,
+    isSelectedItem: Int,
     onDeleteAllMovie: () -> Unit,
     onDeleteMovie: () -> Unit
 ) {
@@ -218,6 +219,7 @@ fun FavoriteEditBottomView(
                 Text(text = stringResource(id = R.string.str_all_delete), style = TextStyle(color = Color.White))
             }
             Button(
+                enabled = isSelectedItem != 0,
                 onClick = {
                     onDeleteMovie()
                 },
@@ -227,12 +229,12 @@ fun FavoriteEditBottomView(
                     .padding(start = 10.dp)
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.White,
-                    contentColor = Color.Black,
+                    backgroundColor = colorResource(id = R.color.orange),
+                    contentColor = colorResource(id = R.color.white),
                 )
             ) {
                 Text(
-                    text = stringResource(id = R.string.str_delete), style = TextStyle(color = Color.Black)
+                    text = stringResource(id = R.string.str_count_delete, isSelectedItem)
                 )
             }
         }
