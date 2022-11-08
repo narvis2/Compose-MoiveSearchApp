@@ -2,8 +2,13 @@ package com.example.moviesearchapp.view.component.favorite
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -173,4 +178,63 @@ fun FavoriteMovieItemView(
     }
 
     Divider(modifier = Modifier.fillMaxWidth())
+}
+
+@Composable
+fun FavoriteEditBottomView(
+    modifier: Modifier = Modifier,
+    isEdit: Boolean,
+    onDeleteAllMovie: () -> Unit,
+    onDeleteMovie: () -> Unit
+) {
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = isEdit,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it })
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = {
+                    onDeleteAllMovie()
+                },
+                shape = RoundedCornerShape(50.dp),
+                modifier = Modifier
+                    .height(50.dp)
+                    .padding(end = 10.dp)
+                    .weight(1f),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colorResource(id = R.color.button),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = stringResource(id = R.string.str_all_delete), style = TextStyle(color = Color.White))
+            }
+            Button(
+                onClick = {
+                    onDeleteMovie()
+                },
+                shape = RoundedCornerShape(50.dp),
+                modifier = Modifier
+                    .height(50.dp)
+                    .padding(start = 10.dp)
+                    .weight(1f),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black,
+                )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.str_delete), style = TextStyle(color = Color.Black)
+                )
+            }
+        }
+    }
 }

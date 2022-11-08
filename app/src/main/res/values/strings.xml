@@ -18,4 +18,5 @@
     <string name="str_edit">편집</string>
     <string name="str_all_select">전체선택</string>
     <string name="str_remove_select">선택해제</string>
+    <string name="str_all_delete">전체삭제</string>
 </resources>

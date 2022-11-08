@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.moviesearchapp.R
+import com.example.moviesearchapp.view.component.favorite.FavoriteEditBottomView
 import com.example.moviesearchapp.view.component.favorite.FavoriteEditModeView
 import com.example.moviesearchapp.view.component.favorite.FavoriteMovieItemView
 import com.example.moviesearchapp.view.navigation.NavigationType
@@ -35,16 +36,15 @@ fun FavoriteScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.fillMaxWidth(),
-                backgroundColor = Color.White
+                modifier = Modifier.fillMaxWidth(), backgroundColor = Color.White
             ) {
-                Box() {
+                Box {
                     Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
 
                         ProvideTextStyle(value = MaterialTheme.typography.h6) {
                             CompositionLocalProvider(
                                 LocalContentAlpha provides ContentAlpha.high,
-                            ){
+                            ) {
                                 Text(
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center,
@@ -60,71 +60,83 @@ fun FavoriteScreen(
         scaffoldState = scaffoldState,
     ) {
         Box(modifier = Modifier.padding(it)) {
-                Column(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxSize()
-                ) {
-                    FavoriteEditModeView(
-                        isEdit = isEdit.value,
-                        isSelectedAll = isAllSelect.value,
-                        onEditModeClick = {
-                            if (isEdit.value && isAllSelect.value) {
-                                val newList = favoriteList.value.map { model ->
-                                    model.isSelected = false
-                                    model
-                                }
-
-                                viewModel.setSavedMovieList(newList)
-                                viewModel.setIsAllSelected(false)
-                            }
-
-                            viewModel.setIsEdit(!isEdit.value)
-                        },
-                        onSelectAllClick = {
-                            if (!isEdit.value) {
-                                viewModel.setIsEdit(true)
-                            }
-
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize()
+            ) {
+                FavoriteEditModeView(isEdit = isEdit.value,
+                    isSelectedAll = isAllSelect.value,
+                    onEditModeClick = {
+                        if (isEdit.value && isAllSelect.value) {
                             val newList = favoriteList.value.map { model ->
-                                model.isSelected = !isAllSelect.value
+                                model.isSelected = false
                                 model
                             }
 
                             viewModel.setSavedMovieList(newList)
-                            viewModel.setIsAllSelected(!isAllSelect.value)
+                            viewModel.setIsAllSelected(false)
                         }
-                    )
 
-                    Spacer(modifier = Modifier.height(15.dp))
+                        viewModel.setIsEdit(!isEdit.value)
+                    },
+                    onSelectAllClick = {
+                        if (!isEdit.value) {
+                            viewModel.setIsEdit(true)
+                        }
 
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        if (favoriteList.value.isEmpty()) {
-                            item {
-                                ErrorOrEmptyView(true)
-                            }
-                        } else {
-                            itemsIndexed(items = favoriteList.value) { index, movie ->
-                                FavoriteMovieItemView(
-                                    movieInfoModel = movie,
-                                    isEdit = isEdit.value,
-                                    isSelected = favoriteList.value[index].isSelected,
-                                    onRootClick = {
-                                        if (isEdit.value) return@FavoriteMovieItemView
-                                        navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
-                                    },
-                                    onSelectClick = { isSelected ->
-                                        // 개별 선택
-                                        val mutableCurrentList = favoriteList.value.toMutableList()
-                                        mutableCurrentList[index] = favoriteList.value[index].copy(isSelected = !isSelected)
+                        // 전체 선택 -> 모든 List 의 isSelected 를 바꿔줌
+                        val newList = favoriteList.value.map { model ->
+                            model.isSelected = !isAllSelect.value
+                            model
+                        }
 
-                                        viewModel.setSavedMovieList(mutableCurrentList)
-                                    }
-                                )
-                            }
+                        viewModel.setSavedMovieList(newList)
+                        viewModel.setIsAllSelected(!isAllSelect.value)
+                    })
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                ) {
+                    if (favoriteList.value.isEmpty()) {
+                        item {
+                            ErrorOrEmptyView(true)
+                        }
+                    } else {
+                        itemsIndexed(items = favoriteList.value) { index, movie ->
+                            FavoriteMovieItemView(movieInfoModel = movie,
+                                isEdit = isEdit.value,
+                                isSelected = favoriteList.value[index].isSelected,
+                                onRootClick = {
+                                    if (isEdit.value) return@FavoriteMovieItemView
+                                    navController.navigate(NavigationType.DETAIL_WEB_VIEW.name + "?url=${movie.link}")
+                                },
+                                onSelectClick = { isSelected ->
+                                    // 개별 선택 -> 해당 Index 의 isSelected 값만 바꿔줌
+                                    val mutableCurrentList = favoriteList.value.toMutableList()
+                                    mutableCurrentList[index] = favoriteList.value[index].copy(isSelected = !isSelected)
+
+                                    viewModel.setSavedMovieList(mutableCurrentList)
+                                })
                         }
                     }
                 }
+            }
+
+            FavoriteEditBottomView(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                isEdit = isEdit.value,
+                onDeleteAllMovie = {
+
+                },
+                onDeleteMovie = {
+
+                }
+            )
         }
     }
 }
