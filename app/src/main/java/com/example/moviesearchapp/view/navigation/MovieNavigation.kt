@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.plusAssign
 import com.example.moviesearchapp.view.MainViewModel
 import com.example.moviesearchapp.view.network.NetworkState
@@ -77,12 +76,7 @@ fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostControll
             }
 
             bottomSheet(
-                route = NavigationType.MORE_BOTTOM_SHEET.name,
-                arguments = listOf(
-                    navArgument("isSave") {
-                        defaultValue = true
-                    }
-                )
+                route = NavigationType.MORE_BOTTOM_SHEET.name
             ) {
                 currentMovieInfoModel.value?.let { currentModel ->
                     MovieMoreBottomSheetDialog(
