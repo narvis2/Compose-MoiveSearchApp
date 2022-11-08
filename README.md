@@ -1,6 +1,6 @@
-# Compose-MovieSearchApp
+# 🍀 Naver Open API 를 이용한 영화 찾기 앱 [Jetpack Compose] 🍀
 
-## 🍎 프로젝트 구성
+## ☘️ 프로젝트 구성 ☘️
 ``` sh
 buildSrc
 ├─ ..
@@ -50,3 +50,27 @@ domain
 │ │ │ │ ├─ repository
 └─└─└─└─└─ usecase   
 ```
+
+## ☘️ 주요 사용 기술 ☘️
+- Kotlin
+- MVC
+- MVVM
+- Clean Archtecture
+- Multi-Module Project
+- Kotlin DSL + BuildSrc
+- Jetpack-Compose
+- Kotlin Coroutine
+- Dagger-Hilt
+- Paging3
+- Retrofit
+- Okhttp
+- Compose-Coil
+- Compose-Navigation
+- Swipe-Refresh
+- Compose-ViewModel
+- Timber
+- Joda
+- Room
+- Compose-Ratingbar
+- Material Icon
+- Material Design
