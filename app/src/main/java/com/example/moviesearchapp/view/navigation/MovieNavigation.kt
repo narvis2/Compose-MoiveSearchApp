@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +18,7 @@ import com.example.moviesearchapp.view.screen.favorite.FavoriteScreen
 import com.example.moviesearchapp.view.screen.home.HomeScreen
 import com.example.moviesearchapp.view.screen.more.MovieMoreBottomSheetDialog
 import com.example.moviesearchapp.view.screen.splash.MovieSplashScreen
+import com.example.moviesearchapp.view.utils.observeWithLifecycle
 import com.example.moviesearchapp.view.widgets.NetworkOfflineDialog
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
@@ -25,7 +27,11 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostController) {
+fun MovieNavigation(
+    mainViewModel: MainViewModel,
+    navController: NavHostController,
+    lifecycleOwner: LifecycleOwner
+) {
 
     val bottomSheetNavigator = rememberBottomSheetNavigator()
 
@@ -36,6 +42,10 @@ fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostControll
     val scaffoldState = rememberScaffoldState()
 
     val currentMovieInfoModel = mainViewModel.currentMovieInfo.collectAsState()
+
+    mainViewModel.showSnackBar.observeWithLifecycle(lifecycleOwner = lifecycleOwner) {
+        scaffoldState.snackbarHostState.showSnackbar(it)
+    }
 
     NetworkOfflineDialog(networkState = networkState) {
         if (scaffoldState.snackbarHostState.currentSnackbarData != null) return@NetworkOfflineDialog
@@ -82,6 +92,9 @@ fun MovieNavigation(mainViewModel: MainViewModel, navController: NavHostControll
                     MovieMoreBottomSheetDialog(
                         navController = navController,
                         movieInfoModel = currentModel,
+                        showSnackBar = {
+                            mainViewModel.showSnackBar(it)
+                        }
                     )
                 }
             }

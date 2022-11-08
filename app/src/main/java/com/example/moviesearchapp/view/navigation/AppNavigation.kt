@@ -11,13 +11,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.rememberNavController
 import com.example.moviesearchapp.view.MainActivity
 import com.example.moviesearchapp.view.MainViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun AppNavigation(mainViewModel: MainViewModel, activity: MainActivity) {
+fun AppNavigation(
+    mainViewModel: MainViewModel,
+    activity: MainActivity,
+    lifecycleOwner: LifecycleOwner
+) {
     val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
     val coroutineScope = rememberCoroutineScope()
 
@@ -48,7 +53,7 @@ fun AppNavigation(mainViewModel: MainViewModel, activity: MainActivity) {
         scaffoldState = scaffoldState
     ) {
         Box(modifier = Modifier.padding(it)) {
-            MovieNavigation(mainViewModel = mainViewModel, navController)
+            MovieNavigation(mainViewModel = mainViewModel, navController, lifecycleOwner)
         }
     }
 }

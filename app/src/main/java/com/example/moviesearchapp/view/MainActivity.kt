@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.LifecycleOwner
 import com.example.moviesearchapp.ui.theme.ComposeMovieSearchAppTheme
 import com.example.moviesearchapp.view.navigation.AppNavigation
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,15 +19,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeMovieSearchAppTheme {
-                MovieApp(mainViewModel, activity = this)
+                MovieApp(mainViewModel, activity = this, lifecycleOwner = this)
             }
         }
     }
 }
 
 @Composable
-fun MovieApp(mainViewModel: MainViewModel, activity: MainActivity) {
-    AppNavigation(mainViewModel = mainViewModel, activity = activity)
+fun MovieApp(
+    mainViewModel: MainViewModel,
+    activity: MainActivity,
+    lifecycleOwner: LifecycleOwner
+) {
+    AppNavigation(
+        mainViewModel = mainViewModel,
+        activity = activity,
+        lifecycleOwner = lifecycleOwner
+    )
 }
 
 @Preview(showBackground = true)
