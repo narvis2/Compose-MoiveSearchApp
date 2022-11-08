@@ -15,6 +15,9 @@ class MainViewModel @Inject constructor(
     private val networkChecker: NetworkChecker
 ) : ViewModel() {
 
+    private val _showSnackBar = MutableSharedFlow<String>(replay = 1)
+    val showSnackBar = _showSnackBar.asSharedFlow()
+
     private val _networkState = MutableSharedFlow<NetworkState>(replay = 1)
     val networkState: SharedFlow<NetworkState> = _networkState.asSharedFlow()
 
@@ -47,6 +50,10 @@ class MainViewModel @Inject constructor(
 
     fun setMovieInfoModel(model: MovieInfoModel) {
         _currentMovieInfo.value = model
+    }
+
+    fun showSnackBar(message: String) = viewModelScope.launch {
+        _showSnackBar.emit(message)
     }
 
     override fun onCleared() {

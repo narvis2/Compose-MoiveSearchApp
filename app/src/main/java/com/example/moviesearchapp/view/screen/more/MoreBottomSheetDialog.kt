@@ -26,6 +26,7 @@ fun MovieMoreBottomSheetDialog(
     viewModel: MoreBottomSheetDialogViewModel = hiltViewModel(),
     navController: NavController,
     movieInfoModel: MovieInfoModel,
+    showSnackBar: (String) -> Unit
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.requestMovieByTitleUseCase(movieInfoModel.title)
@@ -46,6 +47,7 @@ fun MovieMoreBottomSheetDialog(
             ) {
                 viewModel.requestDeleteMovieUseCase(model.id)
                 navController.popBackStack()
+                showSnackBar("\"${model.title.htmlToString()}\"를 \n 즐겨찾기에서 삭제하였습니다.")
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -59,6 +61,7 @@ fun MovieMoreBottomSheetDialog(
         ) {
             viewModel.requestInsertMovie(movieInfoModel)
             navController.popBackStack()
+            showSnackBar("\"${movieInfoModel.title.htmlToString()}\"를 \n 즐겨찾기에 저장하였습니다.")
         }
 
         Spacer(modifier = Modifier.height(20.dp))
