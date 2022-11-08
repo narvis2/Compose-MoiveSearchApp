@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -24,9 +27,29 @@ fun MovieMoreBottomSheetDialog(
     navController: NavController,
     movieInfoModel: MovieInfoModel,
 ) {
-    Column() {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.requestMovieByTitleUseCase(movieInfoModel.title)
+    }
+
+    val existMovie = viewModel.existMovie.collectAsState()
+
+    Column {
         BottomSheetHeader(title = movieInfoModel.title.htmlToString()) {
             navController.popBackStack()
+        }
+
+        existMovie.value?.let { model ->
+            BottomSheetItem(
+                imageVector = Icons.Default.Delete,
+                title = stringResource(id = R.string.str_delete),
+                color = colorResource(id = R.color.red)
+            ) {
+                viewModel.requestDeleteMovieUseCase(model.id)
+                navController.popBackStack()
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+            return@Column
         }
 
         BottomSheetItem(
@@ -35,7 +58,6 @@ fun MovieMoreBottomSheetDialog(
             color = colorResource(R.color.orange)
         ) {
             viewModel.requestInsertMovie(movieInfoModel)
-
             navController.popBackStack()
         }
 
