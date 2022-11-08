@@ -19,4 +19,5 @@
     <string name="str_all_select">전체선택</string>
     <string name="str_remove_select">선택해제</string>
     <string name="str_all_delete">전체삭제</string>
+    <string name="str_count_delete">%1$s개 삭제</string>
 </resources>

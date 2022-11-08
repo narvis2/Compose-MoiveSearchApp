@@ -130,8 +130,9 @@ fun FavoriteScreen(
             FavoriteEditBottomView(
                 modifier = Modifier.align(Alignment.BottomCenter),
                 isEdit = isEdit.value,
+                isSelectedItem = favoriteList.value.filter { model -> model.isSelected }.size,
                 onDeleteAllMovie = {
-
+                    viewModel.onDeleteAllMovie()
                 },
                 onDeleteMovie = {
 
