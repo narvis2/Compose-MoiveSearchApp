@@ -1,7 +1,6 @@
 package com.example.data.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -17,14 +16,17 @@ interface MovieDao {
     @Query("SELECT * FROM `movie` WHERE `id`=:id")
     suspend fun getMovie(id: Long): MovieEntity
 
+    @Query("SELECT * FROM `movie` WHERE `movie_title`=:title")
+    suspend fun getMovieByTitle(title: String): MovieEntity?
+
     @Insert(onConflict = REPLACE)
     suspend fun insertMovie(movieEntity: MovieEntity): Long
 
     @Query("DELETE FROM `movie`")
     suspend fun deleteAll()
 
-    @Delete
-    suspend fun deleteMovie(movieEntity: MovieEntity): Int
+    @Query("DELETE FROM `movie` WHERE `id` = :id")
+    suspend fun deleteMovie(id: Long): Int
 
     @Query("DELETE FROM `movie` WHERE `id` in (:ids)")
     suspend fun deleteMovieListById(ids: List<Long>)

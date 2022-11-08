@@ -32,6 +32,12 @@ class UseCaseModule {
 
     @ViewModelScoped
     @Provides
+    fun provideRequestLocalMovieByTitleUseCase(
+        naverRepository: NaverRepository
+    ): RequestLocalMovieByTitleUseCase = RequestLocalMovieByTitleUseCase(naverRepository)
+
+    @ViewModelScoped
+    @Provides
     fun provideRequestInsertMovieUseCase(
         naverRepository: NaverRepository
     ): RequestInsertMovieUseCase = RequestInsertMovieUseCase(naverRepository)

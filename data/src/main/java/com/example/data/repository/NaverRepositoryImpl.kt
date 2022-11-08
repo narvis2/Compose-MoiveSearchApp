@@ -42,6 +42,10 @@ class NaverRepositoryImpl @Inject constructor(
         return localDataSource.getMovie(id).toMovieInfoModel()
     }
 
+    override suspend fun requestLocalMovieByTitle(title: String): MovieInfoModel? {
+        return localDataSource.getMovieByTitle(title)?.toMovieInfoModel()
+    }
+
     override suspend fun requestInsertMovie(movieInfoModel: MovieInfoModel): Long {
         return localDataSource.insertMovie(movieInfoModel.toMovieEntity())
     }
@@ -50,8 +54,8 @@ class NaverRepositoryImpl @Inject constructor(
         localDataSource.deleteAll()
     }
 
-    override suspend fun requestLocalDeleteMovie(movieInfoModel: MovieInfoModel): Int {
-        return localDataSource.deleteMovie(movieInfoModel.toMovieEntity())
+    override suspend fun requestLocalDeleteMovie(id: Long): Int {
+        return localDataSource.deleteMovie(id)
     }
 
     override suspend fun requestDeleteMovieListById(ids: List<Long>) {

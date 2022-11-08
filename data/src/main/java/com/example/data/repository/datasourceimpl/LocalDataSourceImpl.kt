@@ -17,6 +17,10 @@ class LocalDataSourceImpl @Inject constructor(
         return movieDao.getMovie(id)
     }
 
+    override suspend fun getMovieByTitle(title: String): MovieEntity? {
+        return movieDao.getMovieByTitle(title)
+    }
+
     override suspend fun insertMovie(movieEntity: MovieEntity): Long {
         return movieDao.insertMovie(movieEntity)
     }
@@ -25,8 +29,8 @@ class LocalDataSourceImpl @Inject constructor(
         movieDao.deleteAll()
     }
 
-    override suspend fun deleteMovie(movieEntity: MovieEntity): Int {
-        return movieDao.deleteMovie(movieEntity)
+    override suspend fun deleteMovie(id: Long): Int {
+        return movieDao.deleteMovie(id)
     }
 
     override suspend fun deleteMovieListById(ids: List<Long>) {

@@ -8,11 +8,13 @@ interface LocalDataSource {
 
     suspend fun getMovie(id: Long): MovieEntity
 
+    suspend fun getMovieByTitle(title: String): MovieEntity?
+
     suspend fun insertMovie(movieEntity: MovieEntity): Long
 
     suspend fun deleteAll()
 
-    suspend fun deleteMovie(movieEntity: MovieEntity): Int
+    suspend fun deleteMovie(id: Long): Int
 
     suspend fun deleteMovieListById(ids: List<Long>)
 }

@@ -12,11 +12,13 @@ interface NaverRepository {
 
     suspend fun requestLocalMovie(id: Long): MovieInfoModel
 
+    suspend fun requestLocalMovieByTitle(title: String): MovieInfoModel?
+
     suspend fun requestInsertMovie(movieInfoModel: MovieInfoModel): Long
 
     suspend fun requestLocalDeleteMovieAll()
 
-    suspend fun requestLocalDeleteMovie(movieInfoModel: MovieInfoModel): Int
+    suspend fun requestLocalDeleteMovie(id: Long): Int
 
     suspend fun requestDeleteMovieListById(ids: List<Long>)
 }
