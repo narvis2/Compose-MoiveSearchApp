@@ -53,6 +53,7 @@ class FcmWorker(
                                 .load(pushData.imageUrl)
                                 .submit()
 
+                            // BigPictureStyle -> Image 가 접히고 펴짐
                             val resource = futureBitmap.get()
                             notificationData.builder.setStyle(
                                 NotificationCompat.BigPictureStyle().bigPicture(resource).bigLargeIcon(null)
@@ -68,10 +69,10 @@ class FcmWorker(
             }
 
             if (result.isFailure) {
-                return@withContext Result.failure()
+                Result.failure()
             }
 
-            return@withContext Result.success()
+            Result.success()
         }
     }
 
@@ -102,8 +103,12 @@ class FcmWorker(
                 val channel = NotificationChannel(
                     "FCM",
                     "firebase cloud message",
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
+                    NotificationManager.IMPORTANCE_HIGH // 해드 팝업
+                ).apply {
+                    setShowBadge(true) // 앱 아이콘 위에 알림이 몇개가 왔는지 보여짐
+                    enableVibration(true) // 진동 활성화
+                    lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC // 잠금화면 알림 설정
+                }
 
                 notificationManager.createNotificationChannel(channel)
             }
@@ -116,13 +121,15 @@ class FcmWorker(
             val style = if (!pushData.imageUrl.isNullOrEmpty()) {
                 NotificationCompat.BigPictureStyle().bigPicture(resource).bigLargeIcon(null)
             } else {
+                // 여러 줄의 텍스트를 볼 수 있는 알림 (접힘 -> 펴짐)
                 NotificationCompat.BigTextStyle().bigText(pushData.content_text)
             }
 
             // 알림에 대한 UI 정보와 작업을 지정한다.
             val builder = NotificationCompat.Builder(context, "FCM")
                 .setSmallIcon(R.drawable.ic_favorite_border_24)
-                .setVibrate(longArrayOf(100, 200, 300))
+                .setDefaults(NotificationCompat.DEFAULT_SOUND) // 사운드 활성화
+                .setVibrate(longArrayOf(100, 200, 300)) // 진동 패턴
                 .setContentTitle(pushData.content_title)
                 .setContentText(pushData.content_text)
                 .setStyle(style)
@@ -132,8 +139,10 @@ class FcmWorker(
                         R.drawable.ic_favorite_24
                     )
                 )
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setGroup(fcmGroupKey)
-                .setAutoCancel(true)
+                .setAutoCancel(true) // 알림 탭할 경우 시 알림이 지워짐.
                 .setContentIntent(pendingIntent)
 
             val notification = builder.build()
@@ -141,7 +150,7 @@ class FcmWorker(
             // 알림 그룹에 대한 UI 정보와 작업 지정
             val summaryNotification = NotificationCompat.Builder(context, "FCM")
                 .setSmallIcon(R.drawable.ic_favorite_border_24)
-                .setAutoCancel(true)
+                .setAutoCancel(true) // 알림 탭할 경우 시 알림이 지워짐.
                 .setStyle(NotificationCompat.InboxStyle())
                 .setGroup(fcmGroupKey)
                 .setLargeIcon(
@@ -150,6 +159,8 @@ class FcmWorker(
                         R.drawable.ic_favorite_24
                     )
                 )
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setGroupSummary(true)
                 .build()
 

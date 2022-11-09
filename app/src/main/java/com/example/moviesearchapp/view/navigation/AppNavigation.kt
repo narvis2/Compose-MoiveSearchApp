@@ -33,7 +33,7 @@ fun AppNavigation(
             }
 
             val token = task.result
-            Timber.e("Firebase Cloud Message Token 👉 $token")
+            Timber.d("Firebase Cloud Message Token 👉 $token")
         }
 
     val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
