@@ -29,6 +29,7 @@ class FcmWorker(
         val builder: NotificationCompat.Builder,
     )
 
+    // 서버에서 받아온 데이터 동기화 등 백그라운드 작업을 수행할 코드를 작성
     override suspend fun doWork(): Result {
         return withContext(Dispatchers.IO) {
             val result = kotlin.runCatching {

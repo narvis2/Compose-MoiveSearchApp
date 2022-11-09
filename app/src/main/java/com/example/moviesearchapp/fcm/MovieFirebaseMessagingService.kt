@@ -2,9 +2,7 @@ package com.example.moviesearchapp.fcm
 
 import android.app.NotificationManager
 import android.content.Context
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -45,11 +43,23 @@ class MovieFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun scheduleJob(pushData: PushNotificationModel) {
+        // Worker 에 데이터 보내기 Data.Builder 를 통해 만들고 직렬화하여 보냄
         val inputData =
             Data.Builder().putString("pushData", objectMapper.toJson(pushData)).build()
 
-        val work = OneTimeWorkRequestBuilder<FcmWorker>().setInputData(inputData).build()
+        // 제약조건 설정 👉 네트워크가 연결되었을 때만 실행
+        val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
 
+        /**
+         * ✅ Worker Request 만들기
+         * ✔️ OneTimeWorkRequestBuilder 👉 반복하지 않을 작업, 즉 한번만 실행할 작업의 요청
+         */
+        val work = OneTimeWorkRequestBuilder<FcmWorker>()
+            .setConstraints(constraints)
+            .setInputData(inputData)
+            .build()
+
+        // Request 대기열에 추가
         WorkManager.getInstance(this).enqueue(work)
     }
 }
