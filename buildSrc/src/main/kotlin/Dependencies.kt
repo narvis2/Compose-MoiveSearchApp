@@ -7,6 +7,7 @@ object BuildPlugins {
     val BUILD_SRC_UPDATE_VERSION by lazy { "com.github.ben-manes.versions" }
     val KOTLIN_PARCELIZE by lazy { "kotlin-parcelize" }
     val KOTLIN_KAPT by lazy { "kotlin-kapt" }
+    val GOOGLE_GMS by lazy { "com.google.gms.google-services" }
 }
 
 object Dependencies {
@@ -20,6 +21,8 @@ object Dependencies {
     val timber by lazy { "com.jakewharton.timber:timber:${Versions.TIMBER}" }
     val joda by lazy { "net.danlew:android.joda:${Versions.JODA}" }
     val ratingBar by lazy { "io.github.a914-gowtham:compose-ratingbar:${Versions.COMPOSE_RATING_BAR}" }
+    val firebase = Firebase
+    val compose_permission by lazy { "com.google.accompanist:accompanist-permissions:${Versions.COMPOSE_PERMISSION}" }
 
     object Hilt {
         val hilt by lazy { "com.google.dagger:hilt-android:${Versions.HILT}" }
@@ -30,6 +33,7 @@ object Dependencies {
     object AndroidX {
         val core by lazy { "androidx.core:core-ktx:${Versions.CORE_KTX}" }
         val compose_activity by lazy { "androidx.activity:activity-compose:${Versions.COMPOSE_ACTIVITY}" }
+        val workManager by lazy { "androidx.work:work-runtime-ktx:${Versions.WORK_VERSION}" }
 
         val compose_ui = ComposeUi
         object ComposeUi {
@@ -110,5 +114,10 @@ object Dependencies {
     object Coroutine {
         val core by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINE}" }
         val android by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINE}" }
+    }
+
+    object Firebase {
+        val bom by lazy { "com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM}" }
+        val message by lazy { "com.google.firebase:firebase-messaging:${Versions.FIREBASE_MESSAGING}" }
     }
 }

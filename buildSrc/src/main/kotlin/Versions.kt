@@ -29,4 +29,9 @@ object Versions {
     const val JUNIT = "4.13.2"
     const val TEST_JUNIT = "1.1.3"
     const val ESPRESSO = "3.4.0"
+    const val GOOGLE_GMS = "4.3.13"
+    const val FIREBASE_BOM = "31.0.2"
+    const val FIREBASE_MESSAGING = "23.1.0"
+    const val COMPOSE_PERMISSION = "0.27.0"
+    const val WORK_VERSION = "2.7.1"
 }
