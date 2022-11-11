@@ -1,6 +1,8 @@
 package com.example.moviesearchapp.view.screen.home
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -27,11 +29,16 @@ import com.example.moviesearchapp.view.navigation.NavigationType
 import com.example.moviesearchapp.view.widgets.ErrorOrEmptyView
 import com.example.moviesearchapp.view.widgets.LoadingItemView
 import com.example.moviesearchapp.view.widgets.ScrollTopButton
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
@@ -48,6 +55,25 @@ fun HomeScreen(
     val scrollCoroutineScope = rememberCoroutineScope()
 
     val focusManager = LocalFocusManager.current
+
+    // API 레벨 >= 33(TIRAMISU)에만 필요
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val fcmPermissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+        when  {
+            fcmPermissionState.status.isGranted -> {
+
+            }
+
+            /**
+             * 사용자가 권한 요청을 처음 보거나, 다시 묻지 않음을 선택한 경우
+             * 사용자가 권한 요청을 명시적으로 거부한 경우 true 반환 권한을 승인한 경우 false  반환
+             */
+            fcmPermissionState.status.shouldShowRationale -> {
+
+            }
+        }
+    }
 
     LaunchedEffect(key1 = Unit) {
         homeViewModel.searchClick.collectLatest {
@@ -68,16 +94,15 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier.fillMaxWidth(),
-                backgroundColor = Color.White
+                modifier = Modifier.fillMaxWidth(), backgroundColor = Color.White
             ) {
-                Box() {
+                Box {
                     Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
 
                         ProvideTextStyle(value = MaterialTheme.typography.h6) {
                             CompositionLocalProvider(
                                 LocalContentAlpha provides ContentAlpha.high,
-                            ){
+                            ) {
                                 Text(
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center,

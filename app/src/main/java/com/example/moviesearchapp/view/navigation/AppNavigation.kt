@@ -15,7 +15,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.compose.rememberNavController
 import com.example.moviesearchapp.view.MainActivity
 import com.example.moviesearchapp.view.MainViewModel
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun AppNavigation(
@@ -23,6 +26,16 @@ fun AppNavigation(
     activity: MainActivity,
     lifecycleOwner: LifecycleOwner
 ) {
+    FirebaseMessaging.getInstance().token
+        .addOnCompleteListener { task: Task<String?> ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
+
+            val token = task.result
+            Timber.d("Firebase Cloud Message Token 👉 $token")
+        }
+
     val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
     val coroutineScope = rememberCoroutineScope()
 

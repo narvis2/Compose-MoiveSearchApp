@@ -4,6 +4,7 @@ plugins {
     id (BuildPlugins.KOTLIN_ANDROID) version Versions.KOTLIN apply false
     id (BuildPlugins.DAGGER_HILT) version Versions.HILT apply false
     id (BuildPlugins.BUILD_SRC_UPDATE_VERSION) version Versions.BEN_MANES
+    id (BuildPlugins.GOOGLE_GMS) version Versions.GOOGLE_GMS apply false
 }
 
 tasks.register<Delete>("clean") {

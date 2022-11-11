@@ -4,6 +4,7 @@ plugins {
     id (BuildPlugins.KOTLIN_KAPT)
     id (BuildPlugins.HILT_PLUGIN)
     id (BuildPlugins.KOTLIN_PARCELIZE)
+    id (BuildPlugins.GOOGLE_GMS)
 }
 
 android {
@@ -68,54 +69,51 @@ dependencies {
     implementation(Dependencies.hilt.hilt)
     kapt(Dependencies.hilt.compiler)
     implementation(Dependencies.hilt.compose)
-
     // Compose ViewModel
     implementation(Dependencies.androidX.lifecycle.viewModel)
-
     // Joda DateTime
     implementation(Dependencies.joda)
-
     // Compose Material Icon
     implementation(Dependencies.androidX.material_icon.extended)
     implementation(Dependencies.androidX.material_icon.core)
-
     // Timer Log
     implementation(Dependencies.timber)
-
     // Coroutine Thread
     implementation(Dependencies.coroutine.core)
     implementation(Dependencies.coroutine.android)
-
     // Retrofit + OkHttp Network
     implementation(Dependencies.retrofit)
     implementation(Dependencies.retrofit.gsonConverter)
     implementation(Dependencies.okHttp)
     implementation(Dependencies.okHttp.loggingInterceptor)
-
     // Glide Image
     implementation(Dependencies.image.glide)
     kapt(Dependencies.image.compiler)
-
+    // Coil Image
     implementation(Dependencies.image.coil)
-
     // Compose Navigation
     implementation(Dependencies.androidX.navigation.navigation)
     // Compose Navigation + BottomSheet
     implementation(Dependencies.androidX.navigation.bottomNavigation)
     // Compose SwipeRefreshLayout
     implementation(Dependencies.swipe_refresh)
-
     // Paging3 Pagination
     implementation(Dependencies.androidX.paging.runtime)
     implementation(Dependencies.androidX.paging.compose)
     testImplementation(Dependencies.androidX.paging.common)
-
     // Room
     implementation(Dependencies.androidX.room.runtime)
     implementation(Dependencies.androidX.room.ktx)
     kapt(Dependencies.androidX.room.compiler)
-
+    // RatingBar
     implementation(Dependencies.ratingBar)
+    // Firebase
+    implementation(platform(Dependencies.firebase.bom))
+    implementation(Dependencies.firebase.message)
+    // Compose-Permission
+    implementation(Dependencies.compose_permission)
+    // Work-Manager
+    implementation(Dependencies.androidX.workManager)
 
     testImplementation(Dependencies.androidX.test.junit)
     androidTestImplementation(Dependencies.androidX.test.ext_junit)
